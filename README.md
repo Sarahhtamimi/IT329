@@ -4,11 +4,11 @@
 
 
 ## Team member:
- Sarah Altamimi
- Joud 
- Afeaa
- Yara
- Jana
+ - Sarah Altamimi
+ - Joud 
+ - Afeaa
+ - Yara
+ - Jana
 
  ## Main pages:
  Home
