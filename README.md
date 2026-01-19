@@ -3,14 +3,14 @@
 ##Overview:
 
 
-##Team member:
+## Team member:
  Sarah Altamimi
  Joud 
  Afeaa
  Yara
  Jana
 
- ##Main pages:
+ ## Main pages:
  Home
  Sign Up
  Login 
