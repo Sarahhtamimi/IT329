@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <style>
+            :root{
+  --almond:#E5E0D8;
+  --matcha:#809671;
+  --pistachio:#B3B792;
+  --carob:#725C3A;
+  --white:#FFFFFF;
+  --border: rgba(114,92,58,.12);
+  --shadow-soft: 0 10px 24px rgba(114,92,58,.10);
+}
+
+/* Page */
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: var(--almond);
+  font-family: Arial, sans-serif;
+}
+
+/* Card */
+form{
+  position:relative;
+  width:360px;
+  background: rgba(255,255,255,.70);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow: var(--shadow-soft);
+  padding:80px 22px 22px; /* مساحة للأفاتار */
+}
+
+/* Avatar */
+.avatar{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  object-fit:contain;
+  position:absolute;
+  top:-65px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:10px;
+  border:1px solid rgba(114,92,58,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Title */
+h2{
+  margin:40px 0 18px;
+  text-align:center;
+  font-weight:700;
+  font-size:28px;
+  color:var(--carob);
+}
+
+/* Labels */
+label{
+  display:block;
+  margin:12px 0 6px;
+  font-weight:600;
+  color:var(--carob);
+}
+
+/* Inputs */
+input{
+  width:100%;
+  padding:11px 14px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.85);
+  box-sizing:border-box;
+  margin-bottom:12px;
+}
+
+input::placeholder{
+  opacity:.75;
+}
+
+input:focus{
+  outline:none;
+  border-color: rgba(128,150,113,.45);
+  box-shadow:0 0 0 4px rgba(128,150,113,.16);
+}
+
+/* Buttons */
+input[type="submit"]{
+  margin-top:14px;
+  padding:12px 14px;
+  border-radius:999px;
+  background: var(--matcha);
+  color:white;
+  font-weight:700;
+  border:1px solid rgba(128,150,113,.30);
+  cursor:pointer;
+}
+
+input[type="submit"]:hover{
+  filter:brightness(.97);
+}
+
+/* Two buttons (Admin / User) */
+.btn-group{
+  display:flex;
+  gap:10px;
+}
+
+.btn-group input[type="submit"]{
+  width:50%;
+}
+
+        </style>
+    </head>
+    <body>
+        <form action="URL" method="post"> 
+            <img src="images/Avatar.png" alt="Default Profile Image" class="avatar">
+            <h2>Welcome back</h2>
+            
+            <label>Email<input type="email" name="email" placeholder="You@example.com" required></label>
+            
+            <label>Password<input type="password" name="password" placeholder="Password (8 Charcters)"></label>
+            
+            <div class="btn-group">
+               <input type="submit" value="Admin submit">
+              <input type="submit" value="User submit">
+            </div>
+
+        </form>
+    </body>
+</html>

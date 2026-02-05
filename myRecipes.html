@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Recipes page</title>
+
+  <style>
+    :root{
+      --almond:#E5E0D8;
+      --vanilla:#E5D2B8;
+      --matcha:#809671;
+      --pistachio:#B3B792;
+      --chai:#D2AB80;
+      --carob:#725C3A;
+      --white:#FFFFFF;
+      --text:#2C2C2C;
+
+      --border: rgba(114,92,58,.12);
+      --divider: rgba(114,92,58,.10);
+
+      --shadow-soft: 0 10px 24px rgba(114,92,58,.10);
+      --shadow-normal: 0 16px 40px rgba(114,92,58,.12);
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      padding: 36px 22px;
+      background: var(--almond);
+      font-family: Arial, sans-serif; /* keep it simple for course */
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* same calm layered bg as login/signup */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 520px at 18% 18%, rgba(128,150,113,.18), transparent 62%),
+        radial-gradient(780px 460px at 85% 22%, rgba(210,171,128,.18), transparent 62%);
+      opacity:.95;
+    }
+
+    .page{
+      position:relative;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    /* Title left, Add right */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .title{
+      margin:0;
+      color: var(--carob);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing:.2px;
+    }
+
+    .btn-primary{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 11px 16px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight: 700;
+      background: var(--matcha);
+      color: #fff;
+      border: 1px solid rgba(128,150,113,.30);
+      box-shadow: var(--shadow-soft);
+      transition: transform .14s ease, filter .14s ease;
+    }
+
+    .btn-primary:hover{
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+
+    /* Card (same vibe as login/signup box) */
+    .card{
+      background: rgba(255,255,255,.70);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-normal);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    table{
+      width:100%;
+      border-collapse: separate;
+      border-spacing:0;
+    }
+
+    thead th{
+      background: rgba(229,210,184,.55); /* Vanilla tint */
+      color: var(--carob);
+      padding: 16px 18px;
+      text-align:left;
+      font-weight: 700;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    tbody td{
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--divider);
+      font-size: 14px;
+    }
+
+    tbody tr:last-child td{
+      border-bottom:none;
+    }
+
+    /* nice hover effect */
+    tbody tr{
+      position:relative;
+      transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
+    }
+
+    tbody tr:hover{
+      background: rgba(229,224,216,.35);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(114,92,58,.12);
+    }
+
+    /* soft shine sweep */
+    tbody tr::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      transform: translateX(-40%);
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,.33),
+        transparent
+      );
+      transition: opacity .16s ease, transform .55s ease;
+    }
+
+    tbody tr:hover::after{
+      opacity:1;
+      transform: translateX(40%);
+    }
+
+    td.recipe{
+      font-weight: 800;
+      color: var(--carob);
+    }
+
+    .link{
+      color: var(--matcha);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .link:hover{
+      text-decoration:underline;
+    }
+
+    .pill{
+      display:inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration:none;
+      border: 1px solid var(--border);
+      transition: transform .12s ease, filter .12s ease;
+    }
+
+    .pill.view{
+      background: rgba(128,150,113,.16);
+      color: var(--carob);
+    }
+
+    .pill.delete{
+      background: rgba(210,171,128,.22);
+      color: var(--carob);
+    }
+
+    .pill:hover{
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+    td.likes{
+  text-align: center;
+  font-weight: 700;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h2 class="title">My Recipes</h2>
+      <a href="addRecipe.html" class="btn-primary">Add New Recipe</a>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Recipe</th>
+            <th>Ingredients</th>
+            <th>Instructions</th>
+            <th>Video</th>
+            <th>Number of Likes</th>
+            <th>View</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="recipe">Chocolate Cake</td>
+            <td>Flour, Eggs, Sugar</td>
+            <td>Mix ingredients and bake</td>
+            <td><a href="#" class="link">Watch</a></td>
+            <td class="likes">25</td>
+            <td><a href="viewRecipe.html" class="pill view">View</a></td>
+            <td><a href="#" class="pill delete">Delete</a></td>
+          </tr>
+
+          <tr>
+            <td class="recipe">Pasta</td>
+            <td>Pasta, Tomato Sauce</td>
+            <td>Boil pasta and add sauce</td>
+            <td><a href="#" class="link">Watch</a></td>
+            <td class="likes">10</td>
+            <td><a href="viewRecipe.html" class="pill view">View</a></td>
+            <td><a href="#" class="pill delete">Delete</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+        <title>Sign up</title>
+        <style>
+          /* ===== Theme Tokens ===== */
+:root{
+  --almond:#E5E0D8;
+  --vanilla:#E5D2B8;
+  --matcha:#809671;
+  --pistachio:#B3B792;
+  --chai:#D2AB80;
+  --carob:#725C3A;
+  --white:#FFFFFF;
+
+  --text:#2C2C2C;
+  --border: rgba(114,92,58,.12);
+  --shadow-soft: 0 10px 24px rgba(114,92,58,.10);
+}
+
+/* ===== Page ===== */
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: var(--almond);
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--text);
+}
+
+/* ===== Card ===== */
+form{
+  position:relative;
+  width:360px;
+  background: rgba(255,255,255,.70);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow: var(--shadow-soft);
+  padding:64px 22px 22px;
+}
+
+/* ===== Avatar ===== */
+.avatar{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  object-fit:contain;
+  position:absolute;
+  top:-75px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:10px;
+  border:1px solid rgba(114,92,58,.10);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ===== Headings ===== */
+h2{
+  margin:40px 0 18px;
+  text-align:center;
+  font-family:"Cormorant Garamond", serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--carob);
+}
+
+/* ===== Labels & Inputs ===== */
+label{
+  display:block;
+  margin:12px 0 6px;
+  font-weight:600;
+  font-size:13.5px;
+  color:var(--carob);
+}
+
+input{
+  width:100%;
+  padding:11px 14px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.85);
+  font-size:14px;
+  box-sizing:border-box;
+}
+
+input::placeholder{
+  opacity:.75;
+}
+
+input:focus{
+  outline:none;
+  border-color: rgba(128,150,113,.45);
+  box-shadow:0 0 0 4px rgba(128,150,113,.16);
+}
+
+/* ===== Button ===== */
+input[type="submit"]{
+  margin-top:16px;
+  background: var(--matcha);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  border:1px solid rgba(128,150,113,.30);
+  transition:transform .12s ease, filter .12s ease;
+}
+
+input[type="submit"]:hover{
+  filter:brightness(.97);
+  transform:translateY(-1px);
+}
+
+        </style>
+
+    </head>
+    <body>
+        <form action="URL" method="post"> 
+            <img src="images/Avatar.png" alt="Default Profile Image" class="avatar">
+            <h2>New Account</h2>
+            
+            
+            <label>First name</label>
+            <input type="text" placeholder="Sarah" required>
+
+            <label>Last name</label>
+            <input type="text" placeholder="Altamimi" required>
+
+           <label>Profile image</label>
+           <input type="file">
+
+           <label>Email</label>
+           <input type="email" placeholder="you@example.com" required>
+
+           <label>Password</label>
+           <input type="password" placeholder="Password (8 characters)" required>
+
+           <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
