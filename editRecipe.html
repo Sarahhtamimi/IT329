@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Recipe</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --almond: #E5E0D8;
+  --vanilla: #E5D2B8;
+  --matcha: #809671;
+  --pistachio: #B3B792;
+  --chai: #D2AB80;
+  --carob: #725C3A;
+
+  --text-main: #2C2C2C;
+  --border-soft: rgba(114,92,58,.12);
+
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 10px 24px rgba(114,92,58,.10);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(
+    180deg,
+    var(--almond),
+    rgba(128,150,113,.16)
+  );
+  padding: 40px 16px;
+  color: var(--text-main);
+}
+
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--carob);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+
+form {
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  max-width: 700px;
+  margin: auto;
+  padding: 32px;
+}
+
+
+label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: .85;
+}
+
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-soft);
+  font-family: 'Inter', sans-serif;
+  background: rgba(255,255,255,.85);
+}
+
+textarea {
+  border-radius: 16px;
+  resize: none;
+  line-height: 1.6;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(128,150,113,.5);
+}
+
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.row button {
+  border: none;
+  background: rgba(210,171,128,.15);
+  color: var(--carob);
+  width: 36px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+
+.add-btn {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed rgba(128,150,113,.45);
+  background: rgba(128,150,113,.08);
+  color: var(--carob);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+
+.submit-btn {
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--matcha);
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(128,150,113,.25);
+}
+
+
+#currentPhotoContainer img {
+  max-width: 180px;
+  border-radius: 16px;
+  margin-top: 6px;
+  border: 1px solid var(--border-soft);
+}
+
+#currentVideoContainer a {
+  font-size: 13px;
+  color: var(--matcha);
+  text-decoration: none;
+  opacity: .85;
+}
+
+
+small {
+  font-size: 12px;
+  opacity: .75;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<h1>Edit Recipe</h1>
+
+<form id="recipeForm">
+
+  <label>Recipe Name</label>
+  <input type="text" id="name" required>
+
+  <label>Category</label>
+  <select id="category" required>
+    <option value="Glow plates">Glow plates</option>
+   <option value="Glow sips">Glow sips</option>
+   <option value="Glow treats">Glow treats</option>
+  </select>
+
+  <label>Description</label>
+  <textarea id="description" rows="3" required></textarea>
+
+  <label>Photo</label>
+  <input type="file" id="photo">
+  <div id="currentPhotoContainer"></div>
+
+  <label>Ingredients</label>
+  <div id="ingredients"></div>
+  <button type="button" class="add-btn" onclick="addIngredient()">+ Add Ingredient</button>
+
+  <label>Instructions</label>
+  <div id="instructions"></div>
+  <button type="button" class="add-btn" onclick="addInstruction()">+ Add Step</button>
+
+  <label>Recipe Video (optional)</label>
+  <input type="file" accept="video/*" id="videoFile">
+  <small>or</small>
+  <input type="url" id="videoLink">
+  <div id="currentVideoContainer"></div>
+
+  <button type="submit" class="submit-btn">Save Changes</button>
+
+</form>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const recipeId = parseInt(params.get("id"), 10);
+
+const recipes = JSON.parse(localStorage.getItem("recipes") || "[]");
+const currentRecipe = recipes[recipeId];
+
+if (!currentRecipe) {
+  alert("Recipe not found");
+  window.location.href = "myRecipes.html";
+}
+
+// تعبئة الحقول
+document.getElementById("name").value = currentRecipe.name;
+document.getElementById("category").value = currentRecipe.category;
+document.getElementById("description").value = currentRecipe.description;
+document.getElementById("videoLink").value = currentRecipe.videoLink || "";
+
+// صورة حالية
+if (currentRecipe.photo) {
+  document.getElementById("currentPhotoContainer").innerHTML = `
+    <p>Current Photo:</p>
+    <img src="${currentRecipe.photo}">
+  `;
+}
+
+// فيديو حالي
+if (currentRecipe.videoLink) {
+  document.getElementById("currentVideoContainer").innerHTML = `
+    <p>Current Video:</p>
+    <a href="${currentRecipe.videoLink}" target="_blank">${currentRecipe.videoLink}</a>
+  `;
+}
+
+// Ingredients
+const ingredientsDiv = document.getElementById("ingredients");
+currentRecipe.ingredients.forEach(i => {
+  ingredientsDiv.insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <input type="text" value="${i.ingredient}" required>
+      <input type="text" value="${i.quantity}" required>
+      <button type="button" onclick="removeRow(this)">✕</button>
+    </div>
+  `);
+});
+
+// Instructions
+const instructionsDiv = document.getElementById("instructions");
+currentRecipe.instructions.forEach(step => {
+  instructionsDiv.insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <input type="text" value="${step}" required>
+      <button type="button" onclick="removeRow(this)">✕</button>
+    </div>
+  `);
+});
+
+// تعطيل الحفظ
+document.getElementById("recipeForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  window.location.href = "myRecipes.html";
+});
+
+function addIngredient() {
+  ingredientsDiv.insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <input type="text" placeholder="Ingredient" required>
+      <input type="text" placeholder="Quantity" required>
+      <button type="button" onclick="removeRow(this)">✕</button>
+    </div>
+  `);
+}
+
+function addInstruction() {
+  instructionsDiv.insertAdjacentHTML("beforeend", `
+    <div class="row">
+      <input type="text" placeholder="Step" required>
+      <button type="button" onclick="removeRow(this)">✕</button>
+    </div>
+  `);
+}
+
+function removeRow(btn) {
+  btn.parentElement.remove();
+}
+</script>
+
+
+</body>
+</html>
