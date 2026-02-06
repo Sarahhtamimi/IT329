@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mail" /> 
+    
+    
+    
+    
+    <style>
+
+body{
+    font-family:Inter;
+    background-color: #E5E0D8;
+     padding: 40px  0 50px 0;   
+
+}
+
+.admin_reportTable{
+  width: 1100px;              
+  max-width: 100%;
+  margin: 0 auto;
+  background:#fff;
+  border:1px solid #ecd8c9;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.admin_reportTableHeader{
+  max-height: 420px;
+  overflow:auto;
+  
+}
+
+.admin_reportTableHeader p{
+  margin-left: 20px;
+  margin-top: 27px;
+  font-size: 21px;
+  font-weight: 700;
+  font-family: Fraunces;
+  margin-bottom: 20px;
+}
+
+.admin_reportTableHeader span{
+  margin-left: 20px;
+  color:#6f6a62;
+  font-size:14px;
+}
+.greating_message{
+    padding-left: 55px;
+    display: block;
+    margin-top: -2px ;
+}
+#admin_email{
+    margin-top: -8px ;
+    padding-left: 45px;
+    height: 40px;
+}
+#welcome_square{
+    padding-top: 10px;
+    padding-bottom: 15px;
+    width: 680px;
+}
+
+#admin_square{
+    padding-bottom: 15px;
+    width: 400px;
+}
+table{
+ width:100%;
+  border-collapse: collapse;
+  table-layout: auto;        
+  min-width: 0;
+}
+
+table th{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background:#fff;
+  padding: 14px 22px;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color:#6b5b52;
+  border-bottom:1px solid #efe4d8;
+}
+
+tbody td{
+  padding: 18px 22px;
+  border-bottom:1px solid #efe4d8;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+tbody td:first-child{
+  font-weight: 700;
+}
+
+.report_creatorImg{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.adminPage_creatorAvatar{
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border:1px solid #e7d7cc;
+}
+
+thead th:last-child{
+    padding-left:150px;
+  
+}
+
+tbody td:last-child{
+    padding-left:150px;
+}
+
+
+.admin_blockBtn,
+.admin_dismissBtn{
+  font-family: Inter;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border:1px solid transparent;
+}
+
+.admin_blockBtn{
+  background:#809671;
+  color:#fff;
+  margin-right: 10px;
+}
+
+/* #3d2f29*/
+.admin_dismissBtn{
+  background:#fff;
+  color:#725C3A; 
+  border:1px solid #e7d7cc;
+}
+
+.blocked_email{
+    text-align: left !important;
+    color:#6f6a62;
+}
+
+#email_header{
+  padding-left:150px;
+
+}
+
+.adminPage_smallIcon{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#eef1e7;
+  align-items:center;
+  display: flex;
+  justify-content:center;
+  font-size:16px;
+  color:#5d6b4d;
+  margin-top:20px;
+}
+.adminPage_smallIcon img{
+  width:40px;
+  height:40px;
+}
+
+
+.icon_and_name{
+    display: flex;
+    
+}
+
+#admin_fullname{
+    font-family: Inter;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+#admin_profiletext{
+    font-family: Inter;
+    font-weight: 550;
+    color:rgb(66, 66, 66);
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: -7px;
+}
+.opper_messages{
+  display: flex;
+  width: 1100px;        
+  max-width: 100%;
+  margin: 0 auto;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: stretch;
+}
+
+#welcome_name{
+    font-size: 25px;
+}
+
+
+/* sign out */
+
+
+.adminPage_signOutLink{
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:16px;
+  cursor:pointer;
+  border:1px solid #e7ded3;
+  background:#fff;
+  margin-left:8px;
+  float: right;
+  margin-right: 150px;
+  margin-top: 15px;
+  margin-bottom: 50px;
+  color:#6f6a62;
+  text-decoration:none;
+ 
+}
+
+
+
+
+
+
+</style>
+
+    
+</head>
+<body>
+    <section class="opper_messages">
+        <!--______ Welcome message___________ -->
+        <div class="admin_reportTable" id="welcome_square">
+            <div class="admin_reportTableHeader">
+                <div class="icon_and_name">
+                <span class="adminPage_smallIcon">✨</span>
+                <p id="welcome_name">Welcome, Norah</p>
+                </div>
+                <span class="greating_message">Have a great day managing recipes and reports.</span>
+                
+            </div>
+        </div>
+
+        <!--__________ Admin Profile________ -->
+        <div class="admin_reportTable" id="admin_square">
+            <div class="admin_reportTableHeader">
+              <p id="admin_profiletext">Admin Profile</p>
+                <div class="icon_and_name">
+                <span class="adminPage_smallIcon"><img class="adminPage_creatorAvatar" id="admin_img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=120&auto=format&fit=crop"></span>
+                <p id="admin_fullname">Norah Ibrahim</p>
+                </div>
+                <span class="greating_message" id="admin_email">✉ norahIbrahim@gmail.com</span>
+                
+            </div>
+        </div>
+    </section>
+    <!--__________ REPORT RECIPE TABLE_________-->
+    <div class="admin_reportTable">
+        <div class="admin_reportTableHeader">
+            <div class="icon_and_name">
+                <span class="adminPage_smallIcon">⚠</span>
+                <p>Pending Recipe Reports</p>
+                </div>
+        </div>
+
+        <div class="admin_reportTableContent">
+            <table>
+                <thead><tr>  <th>RECIPE NAME</th>     <th>CREATOR</th>   <th>ACTION</th>    </tr></thead>
+                
+                <tbody>
+                    <tr> 
+                        <td>Date Tahini Energy Bowl</td>
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/creator2.jpeg">
+                                Sara Ahmed
+                            </div>
+                        </td>          
+                        <td>
+                            <button class="admin_blockBtn" type="button">Block user</button>
+                            <button class="admin_dismissBtn" type="button">Dismiss report</button>
+                        </td>
+                    </tr>
+
+                    <tr>  
+                        <td>Saffron Citrus Chicken</td>
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/creator1.jpeg">
+                                Lisa Wilson
+                            </div>
+                        </td>          
+                        <td>
+                            <button class="admin_blockBtn" type="button">Block user</button>
+                            <button class="admin_dismissBtn" type="button">Dismiss report</button>
+                        </td>
+                    </tr>
+
+                    <tr> 
+                        <td>Loomi Chickpea Quinoa</td>
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/creator3.jpeg">
+                                Anas Aziz
+                            </div>
+                        </td>          
+                        <td>
+                            <button class="admin_blockBtn" type="button">Block user</button>
+                            <button class="admin_dismissBtn" type="button">Dismiss report</button>
+                        </td>
+                    </tr>
+
+                    <tr> 
+                        <td>Cardamom Almond Smoothie</td>
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/user2.png">
+                                Anne  Parker
+                            </div>
+                        </td>          
+                        <td>
+                            <button class="admin_blockBtn" type="button">Block user</button>
+                            <button class="admin_dismissBtn" type="button">Dismiss report</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+     <!--________________________    BLOCKED USERS TABLE_________-->
+
+    
+    <div class="admin_reportTable">
+        <div class="admin_reportTableHeader">
+            <div class="icon_and_name">
+                <span class="adminPage_smallIcon">⛔</span>
+                <p>Blocked Users</p>
+                </div>
+        </div>
+
+        <div class="admin_reportTableContent">
+            <table>
+                <thead><tr>  <th>NAME</th>     <th id="email_header">EMAIL</th>      </tr></thead>
+                
+                <tbody>
+                    <tr> 
+                        
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/user3.jpeg">
+                                Amanda Jackson
+                            </div>
+                        </td>          
+                        
+                        <td class="blocked_email">✉ Amanda@gmail.com</td>
+                    </tr>
+
+                    <tr>  
+                        
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/user4.jpeg">
+                                James Chen
+                            </div>
+                        </td>          
+                       <td class="blocked_email">✉ jamesch@hotmail.com</td>
+                    </tr>
+
+                    <tr> 
+                       
+                        <td><div class="report_creatorImg">
+                                <img class="adminPage_creatorAvatar" src="images/user1.png">
+                                Ommar Hassan
+                            </div>
+                        </td>          
+                        
+                         <td class="blocked_email">✉ Omar.hassan@gmail.com</td>
+                    </tr>
+
+                    
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+
+   <!-- SIGN OUT -->
+    <div class="adminPage_signOutWrap">
+
+      <!-- <button class="adminPage_btn adminPage_btnOutline" type="button">sign out</button> -->
+      <a class="adminPage_signOutLink" href="index.html">Sign out</a>
+    </div>
+    
+</body>
+</html>

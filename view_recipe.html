@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Recipe</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
+    
+    
+    <style>
+
+body{
+  margin:0;
+  font-family: Inter;
+  background-color: #E5E0D8;
+  color:#1f1f1f;
+}
+
+
+/* img header */
+img{ max-width:100%; display:block; }
+
+.viewRecipe_header{
+  position:relative;
+  width:100%;
+  min-height:450px;
+  overflow:hidden;
+  border-radius:0 0 24px 24px;
+  box-shadow:0 10px 30px rgba(23, 18, 12, .08);
+}
+
+.viewRecipe_headerImg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+}
+
+.viewRecipe_headerTitle{
+  position:relative;
+  padding:44px 44px 56px;
+  max-width:820px;
+}
+
+.viewRecipe_headerTitle h1{
+  font-family: Fraunces;
+  font-weight:700;
+  margin:0;
+  color:#fff;
+  font-size:54px;
+  line-height:1.05;
+  text-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+/* chef info */
+.viewRecipe_metaCard{
+  margin:26px 200px 26px 200px ;        
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(231,222,211,.9);
+  border-radius:20px;
+  box-shadow:0 10px 26px rgba(23, 18, 12, .08);
+  padding:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.viewRecipe_2Cards{
+  margin:26px 200px 26px 200px ; 
+  display:flex;
+  gap:8px;
+  margin-top:26px;
+  align-items:start;
+  justify-content: flex-start;
+
+}
+
+.ingredients{
+  margin:13px ;        
+  width: 500px;
+  display: flex;
+  font-size: 18px;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+
+.ingredients h2{
+  margin-top: 13px;
+  margin-left: 18px;;
+  font-family: Fraunces;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.ingredients span{
+      color:#6f6a62;
+      font-weight: 400;
+      font-size:14px;
+      margin-left:10px;
+}
+
+.viewRecipe_author{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  min-width:240px;
+}
+
+.viewRecipe_avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,.9);
+  object-fit:cover;
+
+}
+
+.viewRecipe_author small{
+  display:block;
+  color:#6f6a62;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+
+.viewRecipe_author strong{
+  font-weight:600;
+}
+
+/* Buttons */
+.viewRecipe_buttons{
+  display:flex;
+  gap:10px;
+  
+}
+.categories{
+  margin-top: 26px;
+  margin-left: 200px;
+}
+
+
+    
+.viewRecipe_btn{
+  border:1px solid #e7ded3;
+  background:rgba(255,255,255,.9);
+  border-radius:999px;
+  padding:10px 14px;
+  display:inline-flex;
+  gap:8px;
+  font-family: Inter;
+  color:#3a372f;
+  cursor:pointer;
+}
+
+.info{
+    cursor:default;
+    background:#d2dacd;
+    color:#809671;
+    border:1px solid rgba(191, 194, 187, 0.18);
+
+}
+
+.viewRecipe_btn:hover{ 
+  transform: translateY(-1px); 
+}
+
+.info:hover{
+    transform:translateY(0px);
+}
+.viewRecipe_icon{
+  width:17px;
+  text-align:center;
+  opacity:.75;
+}
+ .flag{
+  width:14.5px;
+}
+
+.viewRecipe_description{
+      margin-top:14px;
+      margin-left: 200px;
+      color:#4a463f;
+      max-width:1000px;
+      /* border-bottom:1px solid rgba(183, 179, 174, 0.9); */
+      /* border-bottom:1px solid rgba(202, 195, 187, 0.9); */
+
+    }
+
+
+
+  /* ingrediants and instrcutions */
+.viewRecipe_2Cards{
+  margin: 30px auto;
+  width: 1100px;
+  display: flex;
+  gap: 20px;
+  padding-top: 26px;;
+  border-top:1px solid rgba(202, 195, 187, 0.9);
+
+}
+
+.viewRecipe_metaCard.ingredients{
+  background-color: #fbfaf8;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.ingredients h2{
+  font-family: Fraunces;
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ingredients */
+.ingredients ul{
+  padding-left: 20px;
+}
+
+.ingredients ul li{
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  list-style-type: disc;
+  color: #2b2b2b;
+}
+
+.ingredients ul li::marker{
+  color: #809671;
+}
+
+.ingredients span{
+  color: #6f6a62;
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+/* instructions */
+
+.instructions p{
+  margin: 0;
+  font-weight: 400;
+  color: #3a372f;
+    line-height: 1.8;
+
+}
+
+
+.instructions ol{
+  list-style: none;     
+  padding-left: 0;
+  margin: 0;
+}
+
+.instructions ol li{
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.instructions{
+  font-weight: 600;
+  font-weight: 10px;
+}
+.stepNum{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f4f1ec;
+  border: 1px solid rgba(202,195,187,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #2b2b2b;
+  flex-shrink: 0;
+}
+
+
+.ins-title{
+  margin-bottom: 45px !important;
+}
+
+
+/* video + comments */
+
+.viewRecipe_section{
+  width: 1100px;
+  margin: 26px auto;
+}
+
+.viewRecipe_section h3{
+  font-family: Fraunces, serif;
+  font-weight: 600;
+  font-size: 28px;
+  margin: 0 0 14px;
+  color: #2a2722;
+}
+
+/* Video box */
+.viewRecipe_videoWrap{
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1f1f1f;
+  border: 1px solid rgba(231,222,211,.95);
+  box-shadow: 0 10px 26px rgba(23, 18, 12, .06);
+  margin-bottom: 40px !important;
+}
+
+.viewRecipe_videoWrap iframe{
+  width: 100%;
+  height: 520px;     
+  border: 0;
+  display: block;
+}
+
+/* Comments card */
+.viewRecipe_commentsCard{
+  background: #ffffff;
+  border: 1px solid rgba(231,222,211,.9);
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(23, 18, 12, .06);
+  width:1100px;
+  margin-top: 20px;
+
+}
+
+.viewRecipe_commentsHead{
+  margin-bottom: 12px;
+}
+
+/* Comments list */
+.viewRecipe_commentList{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.viewRecipe_comment{
+  padding: 22px 26px;
+  border-bottom: 1px solid rgba(231,222,211,.8);
+}
+
+.viewRecipe_comment:last-child{
+  border-bottom: 0;
+}
+
+.viewRecipe_commentTop{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.viewRecipe_badge{
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f1ece6;
+  border: 1px solid rgba(231,222,211,.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #5a544c;
+  font-size: 12px;
+}
+
+.viewRecipe_commentTop b{
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.viewRecipe_commentTop small{
+  color: #6f6a62;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.viewRecipe_comment p{
+  margin: 0;
+  color: #3e3a33;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 950px;
+}
+
+
+.viewRecipe_commentForm textarea{
+  width: 92%;
+  margin: 22px 26px 22px 26px ;
+  min-height: 86px;
+  resize: none;
+  border-radius: 14px;
+  border: 1px solid rgba(231,222,211,.95);
+  background: #fbf9f6;
+  padding: 14px 14px;
+  font-family: Inter;
+  color: #2a2722;
+
+}
+
+.viewRecipe_row{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.viewRecipe_postBtn{
+  background: #7f8f6a;
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 20px;
+  margin-right:26px;
+  margin-bottom: 26px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+#commentTitle{
+ margin:22px 26px;
+ font-weight: 600;
+ font-size: 28px;
+}
+
+/* responsive */
+@media (max-width: 1150px){
+  .viewRecipe_section,
+  .viewRecipe_commentsCard{
+    width: 90%;
+  }
+
+  .viewRecipe_videoWrap iframe{
+    height: 380px;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px){
+  .viewRecipe_2Cards{
+    flex-direction: column;
+    width: 90%;
+  }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <!-- header img-->
+  <section class="viewRecipe_header">
+    <img class="viewRecipe_headerImg" src="images/dish4.jpg" alt="Recipe cover">
+
+    <div class="viewRecipe_headerTitle">
+      <h1>Quinoa Bowl<br/>with Loomi Tahini Dressing</h1>
+    </div>
+  </section>
+
+<main class="viewRecipe_container">
+
+    <!-- chef info-->
+    <section class="viewRecipe_metaCard">
+      <div class="viewRecipe_author">
+          <img class="viewRecipe_avatar" src="images/creator1.jpeg" alt="Author">
+            
+            <div>
+                <small>Recipe by</small>
+                <strong>Lisa Wilson</strong>
+            </div>
+      </div>
+
+      <div class="viewRecipe_buttons">
+        <button class="viewRecipe_btn" type="button">
+          <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
+          Save
+        </button>
+
+        <button class="viewRecipe_btn" type="button">
+          <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
+          Like
+        </button>
+
+        <button class="viewRecipe_btn" type="button">
+          <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
+          Report
+        </button>
+      </div>
+    </section>
+
+
+
+    <!-- categories -->
+     <div class="viewRecipe_buttons categories">
+        <div class="viewRecipe_btn info" type="button">
+          Vegetarian
+        </div>
+
+        <div class="viewRecipe_btn info" type="button">
+          Healthy
+        </div>
+
+        <div class="viewRecipe_btn info" type="button">
+          Lunch
+        </div>
+      </div>
+
+    <p class="viewRecipe_description">
+      A vibrant and nourishing bowl packed with protein-rich quinoa, fresh vegetables, and a creamy loomi tahini dressing. 
+      This recipe is perfect for meal prep and brings together the best flavors of warm spices, bright citrus, and wholesome ingredients in one balanced dish
+    </p>
+
+
+    
+    <section class="viewRecipe_2Cards">
+        
+      <!-- ingredients -->
+        <div class="viewRecipe_metaCard ingredients">
+          <h2>Ingredients</h2>
+          <ul>
+            <li class="viewRecipe_ingItem">Quinoa<span>1 cup</span></li>
+            <li class="viewRecipe_ingItem">Chickpeas<span>1 cup</span></li>
+            <li class="viewRecipe_ingItem">Sweet potato<span> 1 medium, cubed</span></li>
+            <li class="viewRecipe_ingItem">Garlic<span>1 clove, minced</span></li>
+            <li class="viewRecipe_ingItem">Red onion<span>¼ cup, thinly sliced</span></li>
+            <li class="viewRecipe_ingItem">Cherry tomatoes<span>1 cup, halved</span></li>
+            <li class="viewRecipe_ingItem">Avocado<span>1 ,sliced</span></li>
+            <li class="viewRecipe_ingItem">Arugula<span>1 cup</span></li>
+            <li class="viewRecipe_ingItem">Tahini<span>3 tablespoons</span></li>
+            <li class="viewRecipe_ingItem">Loomi powder<span>½ teaspoon</span></li>
+            <li class="viewRecipe_ingItem">Olive oil<span>1 tablespoon</span></li>
+          </ul>
+
+        </div>
+
+
+         <!-- instructions -->
+        <div class="viewRecipe_metaCard ingredients instructions">
+          <h2 class="ins-title">Instructions</h2>
+          <ol>
+            <li class="viewRecipe_ingItem">
+              <span class="stepNum">1</span>
+              <p>Preheat the oven and toss the sweet 
+                potatoes with olive oil, cumin, coriander, salt, and pepper.</p>
+            </li>
+
+            <li class="viewRecipe_ingItem">
+              <span class="stepNum">2</span>
+              <p>Roast the sweet potatoes until tender and lightly golden.</p>
+            </li>
+
+            <li class="viewRecipe_ingItem">
+              <span class="stepNum">3</span>
+              <p>Prepare the loomi tahini dressing by whisking tahini, lemon juice, 
+                loomi powder, garlic, olive oil, and water until smooth and creamy.</p>
+            </li>
+
+            <li class="viewRecipe_ingItem">
+              <span class="stepNum">4</span>
+              <p>Assemble the bowl by layering quinoa, vegetables, and chickpeas.</p>
+            </li>
+
+              <li class="viewRecipe_ingItem">
+              <span class="stepNum">5</span>
+              <p>Drizzle with the dressing and serve warm or at room temperature.</p>
+            </li>
+           
+          </ol>
+
+        </div>
+        </section>
+
+
+        <!-- VIDEO -->
+    <section class="viewRecipe_section">
+      <h3>Watch the Recipe</h3>
+      <div class="viewRecipe_videoWrap">
+        <iframe
+          src="https://www.youtube.com/embed/m9dI0OcQx68"
+          title="Recipe video"
+        
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        
+
+      </div>
+    </section>
+
+    <!-- COMMENTS -->
+     
+    <section class="viewRecipe_section viewRecipe_commentsCard ">
+      <div class="viewRecipe_commentsHead">
+        <h3 id="commentTitle">Comments</h3>
+        <!-- <span class="viewRecipe_count">(3)</span> -->
+      </div>
+
+      <ul class="viewRecipe_commentList">
+        <li class="viewRecipe_comment">
+          <div class="viewRecipe_commentTop">
+            <div class="viewRecipe_badge">S</div>
+            <div>
+              <b>Sarah Chen</b>
+              <small>Jan 15, 2024</small>
+            </div>
+          </div>
+          <p>Made this for dinner last night and my whole family loved it! The tahini dressing is absolutely divine. Will definitely be making this again.</p>
+        </li>
+
+        <li class="viewRecipe_comment">
+          <div class="viewRecipe_commentTop">
+            <div class="viewRecipe_badge">M</div>
+            <div>
+              <b>Michael Torres</b>
+              <small>Jan 14, 2024</small>
+            </div>
+          </div>
+          <p>Perfect recipe for meal prep! I made a double batch and it lasted me the whole week. The flavors actually got better after a day in the fridge.</p>
+        </li>
+
+        <li class="viewRecipe_comment">
+          <div class="viewRecipe_commentTop">
+            <div class="viewRecipe_badge">O</div>
+            <div>
+              <b>Olivia Johnson</b>
+              <small>Jan 12, 2024</small>
+            </div>
+          </div>
+          <p>I added some grilled chicken to make it more filling and it was incredible. This is now my go-to healthy lunch recipe!</p>
+        </li>
+      </ul>
+
+      <form class="viewRecipe_commentForm">
+        <textarea placeholder="Share your thoughts on this recipe..."></textarea>
+        <div class="viewRecipe_row">
+          <button class="viewRecipe_postBtn" type="button">
+            <span class="viewRecipe_icon" style="opacity:1"></span>
+            Post Comment
+          </button>
+        </div>
+      </form>
+    </section>
+
+</body>
+</html>
