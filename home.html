@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Palm Glow — Home</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palm Glow palette */
+            --matcha: #809671;
+            --almond: #E5E0D8;
+            --pistachio: #B3B792;
+            --chai: #D2AB80;
+            --carob: #725C3A;
+            --vanilla: #E5D2B8;
+            --white: #FFFFFF;
+
+            --ink: #2C2C2C;
+            --border: rgba(114, 92, 58, .16);
+
+            --r-lg: 20px;
+            --r-md: 16px;
+            --r-pill: 999px;
+
+            --shadow: 0 16px 40px rgba(114, 92, 58, .12);
+            --shadow-soft: 0 10px 24px rgba(114, 92, 58, .10);
+
+            --container: 1100px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Arial, sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(180deg, var(--almond), rgba(229, 224, 216, .85));
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(var(--container), calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(229, 224, 216, .78);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(114, 92, 58, .10);
+        }
+
+        .nav-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 220px;
+        }
+
+        .brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .35);
+            border: 1px solid rgba(114, 92, 58, .12);
+        }
+
+        .brand .name {
+            font-family: "Cormorant Garamond", serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--carob);
+            line-height: 1;
+        }
+
+        .brand .tag {
+            font-size: 12px;
+            opacity: .75;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-link {
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            font-size: 13.5px;
+            opacity: .86;
+            transition: .2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, .55);
+            border-color: rgba(114, 92, 58, .12);
+            opacity: 1;
+        }
+
+        .cta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: 1px solid rgba(114, 92, 58, .14);
+            background: rgba(255, 255, 255, .60);
+            padding: 10px 14px;
+            border-radius: var(--r-pill);
+            cursor: pointer;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary {
+            background: var(--matcha);
+            border-color: rgba(128, 150, 113, .55);
+            color: #fff;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 26px 0 14px;
+        }
+
+        .hero-card {
+            border-radius: 26px;
+            overflow: hidden;
+            border: 1px solid rgba(114, 92, 58, .12);
+            background: rgba(255, 255, 255, .55);
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            min-height: 360px;
+        }
+
+        .hero-img {
+            position: relative;
+            pointer-events: none;
+            min-height: 320px;
+            background: rgba(229, 210, 184, .35);
+        }
+
+        .hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.05);
+        }
+
+        .hero-img::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(229, 224, 216, 0) 35%, rgba(229, 224, 216, .90));
+            pointer-events: none;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+            padding: 36px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 44px;
+            color: var(--carob);
+            line-height: 1.02;
+            letter-spacing: .2px;
+        }
+
+        .hero-desc {
+            margin: 0;
+            font-size: 14.5px;
+            line-height: 1.7;
+            opacity: .82;
+            max-width: 54ch;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        /* Stats */
+        .section {
+            padding: 34px 0;
+        }
+
+        .section h2 {
+            margin: 0 0 12px;
+            font-family: "Cormorant Garamond", serif;
+            color: var(--carob);
+            font-size: 28px;
+        }
+
+        .section p.top {
+            margin: 0 0 18px;
+            font-size: 13.5px;
+            opacity: .78;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, .62);
+            border: 1px solid rgba(114, 92, 58, .12);
+            border-radius: var(--r-lg);
+            padding: 14px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: rgba(128, 150, 113, .16);
+            border: 1px solid rgba(128, 150, 113, .35);
+            font-size: 20px;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 20px;
+            color: var(--carob);
+        }
+
+        .stat span {
+            display: block;
+            font-size: 12.5px;
+            opacity: .78;
+            margin-top: 2px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, .70);
+            border: 1px solid rgba(114, 92, 58, .12);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: .2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+
+        .card-top {
+            height: 160px;
+            overflow: hidden;
+            background: rgba(229, 210, 184, .35);
+        }
+
+        .card-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .card-top::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px 240px at 20% 30%, rgba(128, 150, 113, .20), transparent 60%),
+                radial-gradient(600px 240px at 80% 80%, rgba(210, 171, 128, .22), transparent 60%);
+        }
+
+        .card-body {
+            padding: 14px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 22px;
+            color: var(--carob);
+            line-height: 1.1;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 13.5px;
+            opacity: .78;
+            line-height: 1.55;
+        }
+
+        .pill-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 8px 10px;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(114, 92, 58, .12);
+            background: rgba(229, 224, 216, .35);
+            color: var(--carob);
+        }
+
+        /* ---------- Watch Recipe (Video) ---------- */
+        .video-card {
+            border-radius: 26px;
+            border: 1px solid rgba(114, 92, 58, .12);
+            background: rgba(255, 255, 255, .62);
+            box-shadow: var(--shadow);
+            padding: 14px;
+            max-height: 720 px;
+
+        }
+
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(229, 210, 184, .35);
+            border: 1px solid rgba(114, 92, 58, .10);
+        }
+
+        .video-frame iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+
+        .video-card video {
+            width: 100%;
+            border-radius: 20px;
+            display: block;
+            border: 1px solid rgba(114, 92, 58, .10);
+            background: #000;
+            max-height: 30 px;
+        }
+
+        /* ---------- Footer Upgrade ---------- */
+        .footer {
+            margin-top: 28px;
+            padding: 36px 0 18px;
+            background: linear-gradient(180deg, rgba(210, 171, 128, .35), rgba(229, 210, 184, .55));
+            border-top: 1px solid rgba(114, 92, 58, .12);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1.1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .footer-brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid rgba(114, 92, 58, .12);
+            background: rgba(255, 255, 255, .35);
+        }
+
+        .footer-brand b {
+            color: var(--carob);
+            font-size: 18px;
+        }
+
+        .footer-mini {
+            font-size: 12px;
+            opacity: .75;
+            margin-top: 2px;
+        }
+
+        .footer-col h4 {
+            margin: 6px 0 10px;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 20px;
+            color: var(--carob);
+        }
+
+        .footer-text {
+            margin: 0;
+            font-size: 13.5px;
+            line-height: 1.7;
+            opacity: .82;
+            max-width: 52ch;
+        }
+
+        .footer-text.small {
+            font-size: 12.8px;
+            opacity: .78;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            opacity: .82;
+        }
+
+        .subscribe {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .subscribe input {
+            flex: 1 1 180px;
+            padding: 12px 14px;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(114, 92, 58, .14);
+            background: rgba(255, 255, 255, .70);
+            outline: none;
+        }
+
+        .subscribe input:focus {
+            border-color: rgba(128, 150, 113, .55);
+        }
+
+        .subscribe button {
+            padding: 12px 16px;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(128, 150, 113, .55);
+            background: var(--matcha);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .subscribe button:hover {
+            opacity: .93;
+        }
+
+        .sub-note {
+            margin-top: 10px;
+            font-size: 12.5px;
+            color: var(--carob);
+            opacity: .9;
+            min-height: 16px;
+        }
+
+        .footer-bottom {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(114, 92, 58, .10);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12.5px;
+            opacity: .84;
+        }
+
+        .footer-bottom .made {
+            font-weight: 600;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 980px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-text {
+                max-width: 100%;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 980px) {
+            .hero-card {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-img::after {
+                background: linear-gradient(180deg, rgba(229, 224, 216, 0) 45%, rgba(229, 224, 216, .92));
+            }
+
+            .hero-title {
+                font-size: 38px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                display: none;
+            }
+
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-wrap">
+            <a class="brand" href="#">
+
+                <img src="/images/palmLogo.png" alt="Palm Glow Logo">
+                <div>
+                    <div class="name">Palm Glow</div>
+                    <div class="tag">healthy global recipes • Saudi touch</div>
+                </div>
+            </a>
+
+            <nav>
+                <a class="nav-link" href="user.html">User Page</a>
+                <a class="nav-link" href="my-recipes.html">My Recipes</a>
+                <a class="nav-link" href="add-recipe.html">Add Recipe</a>
+            </nav>
+
+            <div class="cta">
+                <button class="btn" onclick="location.href='login.html'">Log-in</button>
+                <button class="btn btn-primary" onclick="location.href='signup.html'">Sign-up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-card">
+                <div class="hero-img">
+
+                    <img src="/images/hero.PNG" alt="Healthy food hero image">
+                </div>
+
+                <div class="hero-text">
+                    <h1 class="hero-title">Glow up your meals ✦</h1>
+                    <p class="hero-desc">
+                        Palm Glow is your calm space for trendy, healthy recipes — quick ideas, clean ingredients, and a
+                        warm Saudi touch.
+
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="btn btn-primary"
+                            onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+                            Explore
+                        </button>
+                        <button class="btn" onclick="location.href='add-recipe.html'">Add a Recipe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section" id="stats">
+        <div class="container">
+            <h2>Quick Insights</h2>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="icon">🍽️</div>
+                    <div>
+                        <b class="count" data-target="120">0</b>
+                        <span>Total Recipes</span>
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="icon">💚</div>
+                    <div>
+                        <b class="count" data-target="540">0</b>
+                        <span>Likes</span>
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="icon">⏱️</div>
+                    <div>
+                        <b class="count" data-target="35">0</b>
+                        <span>Quick Recipes</span>
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="icon">⭐</div>
+                    <div>
+                        <b class="count" data-target="18">0</b>
+                        <span>Top Rated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards -->
+    <section class="section">
+        <div class="container">
+            <h2>Featured Recipes</h2>
+            <p class="top">What everyone’s cooking right now ⭐️.</p>
+
+            <div class="cards">
+                <article class="card">
+                    <div class="card-top">
+                        <img src="images/glowPlate(1).png" alt="Salmon with Qahwa Spice R">
+                    </div>
+                    <div class="card-body">
+                        <h3>Salmon with Qahwa Spice Rub</h3>
+                        <p>Grilled salmon coated with aromatic qahwa spices, served with light grains and fresh herbs
+                        </p>
+                        <div class="pill-row">
+                            <span class="pill">High Protein</span>
+                            <span class="pill">spiced</span>
+                            <span class="pill">Trendy</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-top">
+                        <img src="images/palmTreat(1).png" alt="Date & Almond Yogurt Bo">
+                    </div>
+                    <div class="card-body">
+                        <h3>Date & Almond Yogurt Bo</h3>
+                        <p>Creamy yogurt topped with dates, almonds, and a touch of natural sweetness.</p>
+                        <div class="pill-row">
+                            <span class="pill">Healthy</span>
+                            <span class="pill">Breakfast</span>
+                            <span class="pill">Quick</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card-top"> <img src="images/glowSip(4).png" alt="Matcha with Rose Water Foam"></div>
+                    <div class="card-body">
+                        <h3>Matcha with Rose Water Foam</h3>
+                        <p>Smooth matcha layered with delicate rose water foam for a calm, floral finish</p>
+                        <div class="pill-row">
+                            <span class="pill">Matcha</span>
+                            <span class="pill">Healthy</span>
+                            <span class="pill">Quick</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Watch Recipe -->
+    <section class="section">
+        <div class="container">
+            <h2>Watch the Recipe</h2>
+            <p class="top">A quick video preview</p>
+
+            <div class="video-card">
+                <video controls preload="metadata" poster="images/video-cover.png">
+                    <source src="recipe.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <!-- About -->
+            <div class="footer-about">
+                <div class="footer-brand">
+                    <img src="/images/palmLogo.png" alt="Palm Glow Logo">
+                    <div>
+                        <b>Palm Glow</b>
+                        <div class="footer-mini">clean wellness • warm Saudi touch</div>
+                    </div>
+                </div>
+
+                <p class="footer-text">
+
+                    Save your favorites, explore quick ideas, and add your own creations — all in one warm vibe.
+                </p>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <div class="footer-links">
+                    <span>Email: help@palmglow.com</span>
+                    <span>Location: Riyadh, Saudi Arabia</span>
+                </div>
+            </div>
+
+            <!-- Subscribe -->
+            <div class="footer-col">
+                <h4>Subscribe</h4>
+                <p class="footer-text small">Get new recipes & wellness picks </p>
+
+                <form class="subscribe" id="subscribeForm">
+                    <input type="email" id="subEmail" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+
+                <div class="sub-note" id="subNote" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <span>© 2026 Palm Glow</span>
+
+        </div>
+    </footer>
+
+    <script>
+        const counters = document.querySelectorAll(".count");
+
+        function animateCount(el) {
+            const target = Number(el.dataset.target);
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 60));
+
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = current;
+                }
+            }, 18);
+        }
+
+        const statsSection = document.getElementById("stats");
+        let started = false;
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !started) {
+                    started = true;
+                    counters.forEach(animateCount);
+                }
+            });
+        }, { threshold: 0.35 });
+
+        io.observe(statsSection);
+    </script>
+</body>
+
+</html>
