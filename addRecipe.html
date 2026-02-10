@@ -361,7 +361,8 @@ small {
   <textarea id="description" rows="3" required></textarea>
 
   <label>Photo</label>
-  <input type="file" id="photo" required>
+  <input type="file" id="photo" accept="image/*" required>
+
 
   <label>Ingredients</label>
   <div id="ingredients">
@@ -420,6 +421,31 @@ form.addEventListener("submit", function(e) {
   function removeRow(btn) {
     btn.parentElement.remove();
   }
+  const photoInput = document.getElementById("photo");
+const videoInput = document.getElementById("videoFile");
+
+
+if (photoInput) {
+  photoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && !file.type.startsWith("image/")) {
+      alert("Please upload an image file only (jpg, png, etc.)");
+      this.value = "";
+    }
+  });
+}
+
+
+if (videoInput) {
+  videoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && !file.type.startsWith("video/")) {
+      alert("Please upload a video file only (mp4, mov, etc.)");
+      this.value = "";
+    }
+  });
+}
+
 </script>
 <footer class="footer">
             <div class="container footer-grid">
