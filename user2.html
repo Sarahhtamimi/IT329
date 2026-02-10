@@ -758,7 +758,7 @@ body.dark .card-title a{ color: #E8ECF1; }
   <div class="profile-card">
 
     <div class="profile-left">
-      <img id="infoPhoto" class="avatar" src="images/default-user.png" alt="Profile photo">
+      <img id="infoPhoto" class="avatar" src="images/Avatar.png" alt="Profile photo">
     </div>
 
     <div class="profile-right">
@@ -932,7 +932,12 @@ body.dark .card-title a{ color: #E8ECF1; }
   document.getElementById("infoFirst").textContent = user.firstName;
   document.getElementById("infoLast").textContent = user.lastName;
   document.getElementById("infoEmail").textContent = user.email;
-  document.getElementById("infoPhoto").src = user.photo;
+ // Photo (from localStorage, fallback to default)
+const DEFAULT_PHOTO = "images/Avatar.png";
+const savedPhoto = localStorage.getItem("userPhoto");
+document.getElementById("infoPhoto").src = savedPhoto || DEFAULT_PHOTO;
+
+
 
   // Totals
   document.getElementById("totalRecipes").textContent = allRecipes.length;

@@ -532,19 +532,35 @@ nav{
         </section>
     </main>
 
-    <script>
-        
-        const form = document.getElementById("signupForm");
-        const note = document.getElementById("note");
+    
+<script>
+  const form = document.getElementById("signupForm");
+  const note = document.getElementById("note");
+  const fileInput = document.getElementById("profileImage");
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            note.textContent = "Account created successfully. Redirecting to User Page...";
-            setTimeout(() => {
-                window.location.href = "user2.html";
-            }, 700);
-        });
-    </script>
+  const DEFAULT_PHOTO = "images/Avatar.png"; 
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const file = fileInput.files && fileInput.files[0];
+
+    if (!file) { //If didnt choose a photo 
+      localStorage.setItem("userPhoto", DEFAULT_PHOTO);
+      note.textContent = "Account created successfully. Redirecting...";
+      window.location.href = "user2.html";
+      return;
+    }
+//If there is will store it
+    const reader = new FileReader();
+    reader.onload = () => {
+      localStorage.setItem("userPhoto", reader.result);
+      note.textContent = "Account created successfully. Redirecting...";
+setTimeout(() => window.location.href = "user2.html", 700);
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
 
 </body>
 
