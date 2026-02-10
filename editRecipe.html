@@ -370,7 +370,8 @@ small {
   <textarea id="description" rows="3" required></textarea>
 
   <label>Photo</label>
-  <input type="file" id="photo">
+  <input type="file" id="photo" accept="image/*">
+
   <div id="currentPhotoContainer"></div>
 
   <label>Ingredients</label>
@@ -476,6 +477,31 @@ function addInstruction() {
 function removeRow(btn) {
   btn.parentElement.remove();
 }
+const photoInput = document.getElementById("photo");
+const videoInput = document.getElementById("videoFile");
+
+
+if (photoInput) {
+  photoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && !file.type.startsWith("image/")) {
+      alert("Please upload an image file only (jpg, png, etc.)");
+      this.value = "";
+    }
+  });
+}
+
+
+if (videoInput) {
+  videoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && !file.type.startsWith("video/")) {
+      alert("Please upload a video file only (mp4, mov, etc.)");
+      this.value = "";
+    }
+  });
+}
+
 </script>
 
 <footer class="footer">
@@ -527,4 +553,6 @@ function removeRow(btn) {
 
 </body>
 </html>
+
+
 
