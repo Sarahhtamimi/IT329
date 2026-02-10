@@ -1,602 +1,1012 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mail" /> 
-    
-    <style>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mail" />
 
-body{
-    font-family:Inter;
-    background-color: #E5E0D8;
+  <style>
+    :root{
+      /* Palm Glow palette  */
+      --matcha: #809671;
+      --almond: #E5E0D8;
+      --pistachio: #B3B792;
+      --chai: #D2AB80;
+      --carob: #725C3A;
+      --vanilla: #E5D2B8;
+      --white: #FFFFFF;
 
-    /* calm layered background (optional but consistent) */
-    background-image:
-      radial-gradient(circle at 18% 12%, rgba(128,150,113,.18), transparent 42%),
-      radial-gradient(circle at 82% 22%, rgba(210,171,128,.16), transparent 46%),
-      radial-gradient(circle at 40% 88%, rgba(128,150,113,.14), transparent 52%);
+      --ink: #2C2C2C;
+      --border: rgba(114, 92, 58, .16);
 
-     padding: 40px  0 50px 0;   
-     color:#2C2C2C;
+      --r-lg: 20px;
+      --r-md: 16px;
+      --r-pill: 999px;
+
+      --shadow: 0 16px 40px rgba(114, 92, 58, .12);
+      --shadow-soft: 0 10px 24px rgba(114, 92, 58, .10);
+
+      --container: 1100px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    a{
+      color: inherit;
+      text-decoration: none;
+    }
+
+    body{
+      margin: 0;
+      font-family: Inter, system-ui, Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, var(--almond), rgba(229, 224, 216, .85));
+    }
+
+    /* pattern overlay (hers) */
+    .pattern{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .09;
+      background-image:
+        linear-gradient(45deg, rgba(179, 183, 146, .35) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(179, 183, 146, .35) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(179, 183, 146, .35) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(179, 183, 146, .35) 75%);
+      background-size: 34px 34px;
+      z-index: -2;
+    }
+
+    .container{
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER 
+    ========================= */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(229, 224, 216, .78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(114, 92, 58, .10);
+    }
+
+    .nav-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
+
+    .brand img{
+      width:44px;
+      height:44px;
+      object-fit: contain;
+      border-radius:12px;
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(114,92,58,.12);
+      display:block;
+    }
+
+    .brand .name{
+      font-family: "Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:22px;
+      color: var(--carob);
+      line-height:1;
+    }
+
+    .brand .tag{
+      font-size:12px;
+      opacity:.75;
+      margin-top:3px;
+    }
+
+    nav{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      justify-content:center;
+    }
+
+    .nav-link{
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid transparent;
+      font-size:13.5px;
+      opacity:.86;
+      transition:.2s;
+    }
+
+    .nav-link:hover{
+      background: rgba(255,255,255,.55);
+      border-color: rgba(114,92,58,.12);
+      opacity: 1;
+    }
+
+    .cta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      border:1px solid rgba(114,92,58,.14);
+      background: rgba(255,255,255,.60);
+      padding:10px 14px;
+      border-radius: var(--r-pill);
+      cursor:pointer;
+      font-weight:600;
+      transition:.2s;
+      font-family: Inter;
+    }
+
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-primary{
+      background: var(--matcha);
+      border-color: rgba(128,150,113,.55);
+      color:#fff;
+    }
+
+    .page{
+      padding: 40px 0 50px 0;
+    }
+
+    /* =========================
+       YOUR ORIGINAL ADMIN CSS
+    ========================= */
+
+    .admin_reportTable{
+      width: 1100px;
+      max-width: 100%;
+      margin: 0 auto;
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(114,92,58,.12);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 24px rgba(114,92,58,.10);
+    }
+
+    .admin_reportTableHeader{
+      max-height: 420px;
+      overflow:auto;
+      background: rgba(229,224,216,.35);
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    .admin_reportTableHeader p{
+      margin-left: 20px;
+      margin-top: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: Cormorant Garamond;
+      margin-bottom: 6px;
+      color:#725C3A;
+      line-height: 1.15;
+    }
+
+    .admin_reportTableHeader span{
+      margin-left: 20px;
+      font-size:13px;
+      opacity: .82;
+    }
+
+    .greating_message{
+      padding-left: 55px;
+      display: block;
+      margin-top: 6px ;
+      opacity: .82;
+    }
+
+    #admin_email{
+      margin-top: 8px ;
+      padding-left: 45px;
+      height: 40px;
+      opacity: .82;
+    }
+
+    #welcome_square{
+      padding-top: 10px;
+      padding-bottom: 15px;
+      width: 680px;
+    }
+
+    #admin_square{
+      padding-bottom: 15px;
+      width: 400px;
+    }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      min-width: 0;
+    }
+
+    table th{
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(255,255,255,.78);
+      padding: 14px 22px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color:#725C3A;
+      opacity: .85;
+      border-bottom:1px solid rgba(114,92,58,.10);
+    }
+
+    tbody td{
+      padding: 18px 22px;
+      border-bottom:1px solid rgba(114,92,58,.10);
+      vertical-align: middle;
+      font-size: 14px;
+      color:#2C2C2C;
+    }
+
+    tbody td:first-child{ font-weight: 700; }
+
+    .report_creatorImg{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .adminPage_creatorAvatar{
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border:1px solid rgba(114,92,58,.12);
+    }
+
+    thead th:last-child{ padding-left:150px; }
+    tbody td:last-child{ padding-left:150px; }
+
+    /* ====== NEW ACTION UI (radio pills + submit) ====== */
+    .admin_actionForm{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .admin_actionForm input[type="radio"]{
+      position:absolute;
+      opacity:0;
+      width:1px;
+      height:1px;
+      pointer-events:none;
+    }
+
+    .admin_actionPill{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,92,58,.14);
+      background: rgba(255,255,255,.85);
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #2C2C2C;
+      transition: .2s;
+      user-select:none;
+    }
+
+    .admin_actionDot{
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(114,92,58,.28);
+      background: transparent;
+      display:inline-block;
+      transition: .2s;
+      flex: 0 0 auto;
+    }
+
+    /* checked state */
+    .admin_actionForm input[type="radio"]:checked + .admin_actionPill{
+      background: rgba(128,150,113,.18);
+      border-color: rgba(128,150,113,.35);
+      color: #2C2C2C;
+      box-shadow: 0 10px 24px rgba(114,92,58,.08);
+    }
+
+    .admin_actionForm input[type="radio"]:checked + .admin_actionPill .admin_actionDot{
+      border-color: rgba(128,150,113,.75);
+      background: radial-gradient(circle at 50% 50%, var(--matcha) 0 45%, transparent 46%);
+    }
+
+    /* hover */
+    .admin_actionPill:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(114,92,58,.08);
+    }
+
+    /* submit button (small + cute) */
+    .admin_actionSubmit{
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(128,150,113,.35);
+      background: var(--matcha);
+      color:#fff;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 12.5px;
+      transition: .2s;
+      font-family: Inter;
+    }
+
+    .admin_actionSubmit:hover{
+      opacity: .94;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* optional: disable submit until selection (works with HTML required) */
+    .admin_actionForm:invalid .admin_actionSubmit{
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* keep your blocked table styling */
+    .blocked_email{
+      text-align: left !important;
+      opacity: .82;
+    }
+
+    #email_header{ padding-left:150px; }
+
+    .adminPage_smallIcon{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      background: rgba(128,150,113,.16);
+      border: 1px solid rgba(128,150,113,.22);
+      align-items:center;
+      display: flex;
+      justify-content:center;
+      font-size:16px;
+      color:#809671;
+      margin-top:20px;
+      flex: 0 0 auto;
+    }
+    .adminPage_smallIcon img{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      object-fit: cover;
+      border:1px solid rgba(114,92,58,.12);
+    }
+
+    .icon_and_name{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #admin_fullname{
+      font-family: Inter;
+      font-weight: 600;
+      font-size: 18px;
+      color:#2C2C2C;
+    }
+
+    #admin_profiletext{
+      font-family: Cormorant Garamond;
+      font-weight: 700;
+      color:#725C3A;
+      font-size: 20px;
+      margin-top: 0px;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .opper_messages{
+      display: flex;
+      width: 1100px;
+      max-width: 100%;
+      margin: 0 auto;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    #welcome_name{ font-size: 30px; }
+
+    /* sign out */
+    .adminPage_signOutLink{
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:14px;
+      cursor:pointer;
+      border:1px solid rgba(114,92,58,.12);
+      background: rgba(255,255,255,.80);
+      margin-left:8px;
+      float: right;
+      margin-right: 150px;
+      margin-top: 15px;
+      margin-bottom: 50px;
+      color:#2C2C2C;
+      text-decoration:none;
+      box-shadow: 0 10px 24px rgba(114,92,58,.10);
+    }
+
+    .recipeLinks{
+      text-decoration: none;
+      color: #2C2C2C;
+    }
+    .recipeLinks:hover{
+      color:#725C3A;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .admin_reportTable,
+    .admin_reportTableHeader,
+    .admin_reportTableContent,
+    table th{
+      background: #FFFFFF;
+    }
+
+    /* =========================
+       FOOTER 
+    ========================= */
+    .footer{
+      margin-top: 28px;
+      padding: 36px 0 18px;
+      background: linear-gradient(180deg, rgba(210, 171, 128, .35), rgba(229, 210, 184, .55));
+      border-top: 1px solid rgba(114, 92, 58, .12);
+    }
+
+    .footer-grid{
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1.1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .footer-brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand img{
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid rgba(114, 92, 58, .12);
+      background: rgba(255, 255, 255, .35);
+    }
+
+    .footer-brand b{
+      color: var(--carob);
+      font-size: 18px;
+    }
+
+    .footer-mini{
+      font-size: 12px;
+      opacity: .75;
+      margin-top: 2px;
+    }
+
+    .footer-col h4{
+      margin: 6px 0 10px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      color: var(--carob);
+    }
+
+    .footer-text{
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.7;
+      opacity: .82;
+      max-width: 52ch;
+    }
+
+    .footer-text.small{
+      font-size: 12.8px;
+      opacity: .78;
+      margin-bottom: 10px;
+    }
+
+    .footer-links{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      opacity: .82;
+    }
+
+    .subscribe{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .subscribe input{
+      flex: 1 1 180px;
+      padding: 12px 14px;
+      border-radius: var(--r-pill);
+      border: 1px solid rgba(114, 92, 58, .14);
+      background: rgba(255, 255, 255, .70);
+      outline: none;
+    }
+
+    .subscribe input:focus{
+      border-color: rgba(128, 150, 113, .55);
+    }
+
+    .subscribe button{
+      padding: 12px 16px;
+      border-radius: var(--r-pill);
+      border: 1px solid rgba(128, 150, 113, .55);
+      background: var(--matcha);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: Inter;
+    }
+
+    .subscribe button:hover{ opacity: .93; }
+
+    .sub-note{
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--carob);
+      opacity: .9;
+      min-height: 16px;
+    }
+
+    .footer-bottom{
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(114, 92, 58, .10);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      opacity: .84;
+    }
+
+    /* remove the outline/border from the pills (dismiss + block) */
+.admin_actionPill{
+  border: 0 !important;
+  box-shadow: none;
 }
 
-.admin_reportTable{
-  width: 1100px;              
-  max-width: 100%;
-  margin: 0 auto;
-  background: rgba(255,255,255,.70);
-  border:1px solid rgba(114,92,58,.12);
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 24px rgba(114,92,58,.10);
+/* keep it clean even on hover */
+.admin_actionPill:hover{
+  box-shadow: none;
 }
+    /* Responsive footer */
+    @media (max-width: 980px){
+      .footer-grid{ grid-template-columns: 1fr; }
+      .footer-text{ max-width: 100%; }
+    }
 
-.admin_reportTableHeader{
-  max-height: 420px;
-  overflow:auto;
-  background: rgba(229,224,216,.35);
-  padding-top: 18px;
-  padding-bottom: 18px;
-}
+    @media (max-width: 980px){
+      nav{ display:none; }
+    }
 
-.admin_reportTableHeader p{
-  margin-left: 20px;
-  margin-top: 8px;
-  font-size: 22px;
-  font-weight: 700;
-  font-family: Cormorant Garamond;
-  margin-bottom: 6px;
-  color:#725C3A;
-  line-height: 1.15;
-}
+    @media (max-width: 1024px){
+      .page{ padding: 24px 16px 40px 16px; }
 
-.admin_reportTableHeader span{
-  margin-left: 20px;
-  font-size:13px;
-  opacity: .82;
-}
+      .admin_reportTable{ width: 100%; }
+      .opper_messages{ width: 100%; }
 
-.greating_message{
-    padding-left: 55px;
-    display: block;
-    margin-top: 6px ;
-    opacity: .82;
-}
-#admin_email{
-    margin-top: 8px ;
-    padding-left: 45px;
-    height: 40px;
-    opacity: .82;
-}
-#welcome_square{
-    padding-top: 10px;
-    padding-bottom: 15px;
-    width: 680px;
-}
+      #welcome_square{ width: 62%; }
+      #admin_square{ width: 38%; }
 
-#admin_square{
-    padding-bottom: 15px;
-    width: 400px;
-}
-table{
- width:100%;
-  border-collapse: collapse;
-  table-layout: auto;        
-  min-width: 0;
-}
+      thead th:last-child,
+      tbody td:last-child,
+      #email_header{
+        padding-left: 22px;
+      }
 
-table th{
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: rgba(255,255,255,.78);
-  padding: 14px 22px;
-  text-align: left;
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  color:#725C3A;
-  opacity: .85;
-  border-bottom:1px solid rgba(114,92,58,.10);
-}
+      .adminPage_signOutLink{
+        margin-right: 16px;
+      }
+    }
 
-tbody td{
-  padding: 18px 22px;
-  border-bottom:1px solid rgba(114,92,58,.10);
-  vertical-align: middle;
-  font-size: 14px;
-  color:#2C2C2C;
-}
+    @media (max-width: 768px){
+      .page{ padding: 18px 14px 34px 14px; }
 
-tbody td:first-child{
-  font-weight: 700;
-}
+      .opper_messages{
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+      }
 
-.report_creatorImg{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-}
+      #welcome_square,
+      #admin_square{
+        width: 100%;
+      }
 
-.adminPage_creatorAvatar{
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-  border:1px solid rgba(114,92,58,.12);
-}
+      #welcome_name{ font-size: 24px; }
 
-thead th:last-child{
-    padding-left:150px;
-  
-}
+      .admin_reportTableHeader{
+        padding-top: 14px;
+        padding-bottom: 14px;
+      }
 
-tbody td:last-child{
-    padding-left:150px;
-}
+      .admin_reportTableHeader p{
+        font-size: 20px;
+        margin-left: 16px;
+      }
 
-.admin_blockBtn,
-.admin_dismissBtn{
-  font-family: Inter;
-  padding: 9px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  border:1px solid transparent;
-}
+      .admin_reportTableHeader span{ margin-left: 16px; }
 
-.admin_blockBtn{
-  background:#809671;
-  color:#fff;
-  margin-right: 10px;
-  border: 1px solid rgba(128,150,113,.35);
-}
+      .greating_message{ padding-left: 52px; }
 
-.admin_dismissBtn{
-  background: rgba(255,255,255,.85);
-  color:#2C2C2C; 
-  border:1px solid rgba(114,92,58,.12);
-}
+      table{ width: 100%; border-collapse: collapse; }
+      table thead{ display:none; }
 
-.blocked_email{
-    text-align: left !important;
-    opacity: .82;
-}
+      table tbody tr{
+        display:block;
+        margin: 14px 14px;
+        padding: 12px 14px;
+        border: 1px solid rgba(114,92,58,.12);
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(114,92,58,.08);
+        background: #FFFFFF;
+      }
 
-#email_header{
-  padding-left:150px;
+      table tbody td{
+        display:flex;
+        align-items:flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(114,92,58,.10);
+        font-size: 14px;
+      }
 
-}
+      table tbody td:last-child{
+        border-bottom: 0;
+        padding-left: 0;
+      }
 
-.adminPage_smallIcon{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background: rgba(128,150,113,.16);
-  border: 1px solid rgba(128,150,113,.22);
-  align-items:center;
-  display: flex;
-  justify-content:center;
-  font-size:16px;
-  color:#809671;
-  margin-top:20px;
-}
-.adminPage_smallIcon img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  object-fit: cover;
-  border:1px solid rgba(114,92,58,.12);
-}
+      /* mobile action layout */
+      table tbody td form.admin_actionForm{
+        justify-content: flex-end;
+      }
 
-.icon_and_name{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+      .blocked_email{ text-align: right !important; }
 
-#admin_fullname{
-    font-family: Inter;
-    font-weight: 600;
-    font-size: 18px;
-    color:#2C2C2C;
-}
-
-#admin_profiletext{
-    font-family: Cormorant Garamond;
-    font-weight: 700;
-    color:#725C3A;
-    font-size: 20px;
-    margin-top: 0px;
-    margin-bottom: 12px;
-    line-height: 1.15;
-}
-.opper_messages{
-  display: flex;
-  width: 1100px;        
-  max-width: 100%;
-  margin: 0 auto;
-  justify-content: space-between;
-  gap: 14px;
-  align-items: stretch;
-}
-
-#welcome_name{
-    font-size: 30px;
-}
-
-/* sign out */
-.adminPage_signOutLink{
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:14px;
-  cursor:pointer;
-  border:1px solid rgba(114,92,58,.12);
-  background: rgba(255,255,255,.80);
-  margin-left:8px;
-  float: right;
-  margin-right: 150px;
-  margin-top: 15px;
-  margin-bottom: 50px;
-  color:#2C2C2C;
-  text-decoration:none;
-  box-shadow: 0 10px 24px rgba(114,92,58,.10);
-}
-
-.recipeLinks{
-    text-decoration: none;
-    color: #2C2C2C;
-}
-.recipeLinks:hover{
-    color:#725C3A;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-
-
-
-
-.admin_reportTable,
-.admin_reportTableHeader,
-.admin_reportTableContent,
-table th{
-  background: #FFFFFF;
-}
-
-/* =========================
-   PRETTY RESPONSIVE (iPad + iPhone)
-   - iPad: tighter layout
-   - iPhone: tables become stacked cards
-========================= */
-
-/* better page padding on smaller screens */
-@media (max-width: 1024px){
-  body{
-    padding: 24px 16px 40px 16px;
-  }
-
-  .admin_reportTable{
-    width: 100%;
-  }
-
-  .opper_messages{
-    width: 100%;
-  }
-
-  /* keep your 2 top cards, but make them flexible */
-  #welcome_square{ width: 62%; }
-  #admin_square{ width: 38%; }
-
-  /* remove the huge left padding in last columns */
-  thead th:last-child,
-  tbody td:last-child,
-  #email_header{
-    padding-left: 22px;
-  }
-
-  .adminPage_signOutLink{
-    margin-right: 16px;
-  }
-}
-
-
-/* iPhone + small screens */
-@media (max-width: 768px){
-
-  body{
-    padding: 18px 14px 34px 14px;
-  }
-
-  /* stack the top 2 cards */
-  .opper_messages{
-    flex-direction: column;
-    gap: 14px;
-    width: 100%;
-  }
-
-  #welcome_square,
-  #admin_square{
-    width: 100%;
-  }
-
-  /* slightly smaller title */
-  #welcome_name{
-    font-size: 24px;
-  }
-
-  /* header spacing */
-  .admin_reportTableHeader{
-    padding-top: 14px;
-    padding-bottom: 14px;
-  }
-
-  .admin_reportTableHeader p{
-    font-size: 20px;
-    margin-left: 16px;
-  }
-
-  .admin_reportTableHeader span{
-    margin-left: 16px;
-  }
-
-  .greating_message{
-    padding-left: 52px;
-  }
-
-  /* =========================
-     TABLE -> PRETTY CARD LIST
-     (no horizontal scroll)
-  ========================= */
-
-  table{
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  table thead{
-    display:none; /* hide table header */
-  }
-
-  table tbody tr{
-    display:block;
-    margin: 14px 14px;
-    padding: 12px 14px;
-    border: 1px solid rgba(114,92,58,.12);
-    border-radius: 16px;
-    box-shadow: 0 10px 24px rgba(114,92,58,.08);
-    background: #FFFFFF;
-  }
-
-  table tbody td{
-    display:flex;
-    align-items:flex-start;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(114,92,58,.10);
-    font-size: 14px;
-  }
-
-  table tbody td:last-child{
-    border-bottom: 0;
-    padding-left: 0; /* kill your desktop padding */
-  }
-
-  
-  /* make action buttons look clean on mobile */
-  table tbody td form{
-    display:flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .admin_blockBtn,
-  .admin_dismissBtn{
-    padding: 10px 14px;
-    font-size: 12px;
-  }
-
-  /* fix email alignment in blocked table */
-  .blocked_email{
-    text-align: right !important;
-  }
-
-  /* center sign out nicely */
-  .adminPage_signOutLink{
-    float: none;
-    display: inline-block;
-    margin: 18px auto 0 auto;
-  }
-}
-
-
-</style>
-
-    
+      .adminPage_signOutLink{
+        float: none;
+        display: inline-block;
+        margin: 18px auto 0 auto;
+      }
+    }
+  </style>
 </head>
-<body>
-    <section class="opper_messages">
-        <!--______ Welcome message___________ -->
-        <div class="admin_reportTable" id="welcome_square">
-            <div class="admin_reportTableHeader">
-                <div class="icon_and_name">
-                <span class="adminPage_smallIcon">✨</span>
-                <p id="welcome_name">Welcome, Norah</p>
-                </div>
-                <span class="greating_message">Have a great day managing recipes and reports.</span>
-                
-            </div>
-        </div>
 
-        <!--__________ Admin Profile________ -->
-        <div class="admin_reportTable" id="admin_square">
-            <div class="admin_reportTableHeader">
-              <p id="admin_profiletext">Admin Profile</p>
-                <div class="icon_and_name">
-                <span class="adminPage_smallIcon"><img class="adminPage_creatorAvatar" id="admin_img" src="images/admin5.png"></span>
-                <p id="admin_fullname">Norah Ibrahim</p>
-                </div>
-                <span class="greating_message" id="admin_email">✉ norahIbrahim@gmail.com</span>
-                
-            </div>
+<body>
+  <!-- Background pattern -->
+  <div class="pattern" aria-hidden="true"></div>
+
+  <!-- Header  -->
+  <header>
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">
+        <img src="/images/palmLogo.png" alt="Palm Glow Logo">
+        <div>
+          <div class="name">Palm Glow</div>
+          <div class="tag">healthy global recipes • Saudi touch</div>
         </div>
+      </a>
+
+      <nav>
+        <a class="nav-link" href="user.html">User Page</a>
+        <a class="nav-link" href="my-recipes.html">My Recipes</a>
+        <a class="nav-link" href="add-recipe.html">Add Recipe</a>
+      </nav>
+
+     
+
+      <div class="cta">
+        <button class="btn" onclick="location.href='index.html'">Sign out</button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="opper_messages">
+      <!--______ Welcome message___________ -->
+      <div class="admin_reportTable" id="welcome_square">
+        <div class="admin_reportTableHeader">
+          <div class="icon_and_name">
+            <span class="adminPage_smallIcon">✨</span>
+            <p id="welcome_name">Welcome, Norah</p>
+          </div>
+          <span class="greating_message">Have a great day managing recipes and reports.</span>
+        </div>
+      </div>
+
+      <!--__________ Admin Profile________ -->
+      <div class="admin_reportTable" id="admin_square">
+        <div class="admin_reportTableHeader">
+          <p id="admin_profiletext">Admin Profile</p>
+          <div class="icon_and_name">
+            <span class="adminPage_smallIcon">
+              <img class="adminPage_creatorAvatar" id="admin_img" src="images/admin5.png" alt="">
+            </span>
+            <p id="admin_fullname">Norah Ibrahim</p>
+          </div>
+          <span class="greating_message" id="admin_email">✉ norahIbrahim@gmail.com</span>
+        </div>
+      </div>
     </section>
+
     <!--__________ REPORT RECIPE TABLE_________-->
     <div class="admin_reportTable">
-        <div class="admin_reportTableHeader">
-            <div class="icon_and_name">
-                <span class="adminPage_smallIcon">⚠</span>
-                <p>Pending Recipe Reports</p>
+      <div class="admin_reportTableHeader">
+        <div class="icon_and_name">
+          <span class="adminPage_smallIcon">⚠</span>
+          <p>Pending Recipe Reports</p>
+        </div>
+      </div>
+
+      <div class="admin_reportTableContent">
+        <table>
+          <thead>
+            <tr>
+              <th>RECIPE NAME</th>
+              <th>CREATOR</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td><a class="recipeLinks" href="view_recipe.html">Date Tahini Energy Bowl</a></td>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/creator2.jpeg" alt="">
+                  Sara Ahmed
                 </div>
-        </div>
+              </td>
+              <td>
+                <!-- RADIO ACTIONS -->
+                <form class="admin_actionForm" action="admin.html" method="get">
+                  <input required type="radio" id="r1_block" name="action_1" value="block">
+                  <label class="admin_actionPill" for="r1_block">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Block user
+                  </label>
 
-        <div class="admin_reportTableContent">
-            <table>
-                <thead><tr>  <th>RECIPE NAME</th>     <th>CREATOR</th>   <th>ACTION</th>    </tr></thead>
-                
-                <tbody>
-                    <tr> 
-                        <td><a class="recipeLinks" href="view_recipe.html" > Date Tahini Energy Bowl</a></td>
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/creator2.jpeg">
-                                Sara Ahmed
-                            </div>
-                        </td>          
-                        <td>
-                            <form action="admin.html" method="get">
-                                <button class="admin_blockBtn" type="submit" name="action" value="block">Block user</button>
-                                <button class="admin_dismissBtn" type="submit" name="action" value="dismiss">Dismiss report</button>
-                            </form>
-</td>
+                  <input required type="radio" id="r1_dismiss" name="action_1" value="dismiss">
+                  <label class="admin_actionPill" for="r1_dismiss">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Dismiss report
+                  </label>
 
-                    </tr>
+                  <button class="admin_actionSubmit" type="submit">Submit</button>
+                </form>
+              </td>
+            </tr>
 
-                    <tr>  
-                        <td><a class="recipeLinks" href="view_recipe.html" >Quinoa Bowl
-with Loomi Tahini Dressing</a></td>
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/creator1.jpeg">
-                                Lisa Wilson
-                            </div>
-                        </td>          
-                       <td>
-                        <form action="admin.html" method="get">
-                            <button class="admin_blockBtn" type="submit" name="action" value="block">Block user</button>
-                            <button class="admin_dismissBtn" type="submit" name="action" value="dismiss">Dismiss report</button>
-                        </form>
-                        </td>
+            <tr>
+              <td><a class="recipeLinks" href="view_recipe.html">Quinoa Bowl<br>with Loomi Tahini Dressing</a></td>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/creator1.jpeg" alt="">
+                  Lisa Wilson
+                </div>
+              </td>
+              <td>
+                <form class="admin_actionForm" action="admin.html" method="get">
+                  <input required type="radio" id="r2_block" name="action_2" value="block">
+                  <label class="admin_actionPill" for="r2_block">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Block user
+                  </label>
 
-                    </tr>
+                  <input required type="radio" id="r2_dismiss" name="action_2" value="dismiss">
+                  <label class="admin_actionPill" for="r2_dismiss">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Dismiss report
+                  </label>
 
-                    <tr> 
-                        <td><a class="recipeLinks" href="view_recipe.html" >Saffron Citrus Chicken</a></td>
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/creator3.jpeg">
-                                Anas Aziz
-                            </div>
-                        </td>          
-                        <td>
-                            <form action="admin.html" method="get">
-                                <button class="admin_blockBtn" type="submit" name="action" value="block">Block user</button>
-                                <button class="admin_dismissBtn" type="submit" name="action" value="dismiss">Dismiss report</button>
-                            </form>
-                            </td>
+                  <button class="admin_actionSubmit" type="submit">Submit</button>
+                </form>
+              </td>
+            </tr>
 
-                    </tr>
+            <tr>
+              <td><a class="recipeLinks" href="view_recipe.html">Saffron Citrus Chicken</a></td>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/creator3.jpeg" alt="">
+                  Anas Aziz
+                </div>
+              </td>
+              <td>
+                <form class="admin_actionForm" action="admin.html" method="get">
+                  <input required type="radio" id="r3_block" name="action_3" value="block">
+                  <label class="admin_actionPill" for="r3_block">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Block user
+                  </label>
 
-                    <tr> 
-                        <td><a class="recipeLinks" href="view_recipe.html" >Cardamom Almond Smoothie</a></td>
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/user2.png">
-                                Anne  Parker
-                            </div>
-                        </td>          
-                        <td>
-                            <form action="admin.html" method="get">
-                                <button class="admin_blockBtn" type="submit" name="action" value="block">Block user</button>
-                                <button class="admin_dismissBtn" type="submit" name="action" value="dismiss">Dismiss report</button>
-                            </form>
-                            </td>
+                  <input required type="radio" id="r3_dismiss" name="action_3" value="dismiss">
+                  <label class="admin_actionPill" for="r3_dismiss">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Dismiss report
+                  </label>
 
-                    </tr>
-                </tbody>
+                  <button class="admin_actionSubmit" type="submit">Submit</button>
+                </form>
+              </td>
+            </tr>
 
+            <tr>
+              <td><a class="recipeLinks" href="view_recipe.html">Cardamom Almond Smoothie</a></td>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/user2.png" alt="">
+                  Anne Parker
+                </div>
+              </td>
+              <td>
+                <form class="admin_actionForm" action="admin.html" method="get">
+                  <input required type="radio" id="r4_block" name="action_4" value="block">
+                  <label class="admin_actionPill" for="r4_block">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Block user
+                  </label>
 
-            </table>
-        </div>
+                  <input required type="radio" id="r4_dismiss" name="action_4" value="dismiss">
+                  <label class="admin_actionPill" for="r4_dismiss">
+                    <span class="admin_actionDot" aria-hidden="true"></span>
+                    Dismiss report
+                  </label>
+
+                  <button class="admin_actionSubmit" type="submit">Submit</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-     <!--________________________    BLOCKED USERS TABLE_________-->
-
+    <!--________________________    BLOCKED USERS TABLE_________-->
     <div class="admin_reportTable">
-        <div class="admin_reportTableHeader">
-            <div class="icon_and_name">
-                <span class="adminPage_smallIcon">⛔</span>
-                <p>Blocked Users</p>
+      <div class="admin_reportTableHeader">
+        <div class="icon_and_name">
+          <span class="adminPage_smallIcon">⛔</span>
+          <p>Blocked Users</p>
+        </div>
+      </div>
+
+      <div class="admin_reportTableContent">
+        <table>
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th id="email_header">EMAIL</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/user3.jpeg" alt="">
+                  Amanda Jackson
                 </div>
-        </div>
+              </td>
+              <td class="blocked_email">✉ Amanda@gmail.com</td>
+            </tr>
 
-        <div class="admin_reportTableContent">
-            <table>
-                <thead><tr>  <th>NAME</th>     <th id="email_header">EMAIL</th>      </tr></thead>
-                
-                <tbody>
-                    <tr> 
-                        
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/user3.jpeg">
-                                Amanda Jackson
-                            </div>
-                        </td>          
-                        
-                        <td class="blocked_email">✉ Amanda@gmail.com</td>
-                    </tr>
+            <tr>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/user4.jpeg" alt="">
+                  James Chen
+                </div>
+              </td>
+              <td class="blocked_email">✉ jamesch@hotmail.com</td>
+            </tr>
 
-                    <tr>  
-                        
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/user4.jpeg">
-                                James Chen
-                            </div>
-                        </td>          
-                       <td class="blocked_email">✉ jamesch@hotmail.com</td>
-                    </tr>
-
-                    <tr> 
-                       
-                        <td><div class="report_creatorImg">
-                                <img class="adminPage_creatorAvatar" src="images/user1.png">
-                                Ommar Hassan
-                            </div>
-                        </td>          
-                        
-                         <td class="blocked_email">✉ Omar.hassan@gmail.com</td>
-                    </tr>
-
-                    
-                </tbody>
-
-
-            </table>
-        </div>
+            <tr>
+              <td>
+                <div class="report_creatorImg">
+                  <img class="adminPage_creatorAvatar" src="images/user1.png" alt="">
+                  Ommar Hassan
+                </div>
+              </td>
+              <td class="blocked_email">✉ Omar.hassan@gmail.com</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-   <!-- SIGN OUT -->
-    <div class="adminPage_signOutWrap">
-
-      <!-- <button class="adminPage_btn adminPage_btnOutline" type="button">sign out</button> -->
-      <a class="adminPage_signOutLink" href="index.html">Sign out</a>
-    </div>
     
+  </main>
+
+  <!-- Footer  -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <!-- About -->
+      <div class="footer-about">
+        <div class="footer-brand">
+          <img src="/images/palmLogo.png" alt="Palm Glow Logo">
+          <div>
+            <b>Palm Glow</b>
+            <div class="footer-mini">clean wellness • warm Saudi touch</div>
+          </div>
+        </div>
+
+        <p class="footer-text">
+          Save your favorites, explore quick ideas, and add your own creations — all in one warm vibe.
+        </p>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-links">
+          <span>Email: help@palmglow.com</span>
+          <span>Location: Riyadh, Saudi Arabia</span>
+        </div>
+      </div>
+
+      <!-- Subscribe -->
+      <div class="footer-col">
+        <h4>Subscribe</h4>
+        <p class="footer-text small">Get new recipes & wellness picks</p>
+
+        <form class="subscribe" id="subscribeForm">
+          <input type="email" id="subEmail" placeholder="Enter your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+
+        <div class="sub-note" id="subNote" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 Palm Glow</span>
+    </div>
+  </footer>
 </body>
 </html>
-
