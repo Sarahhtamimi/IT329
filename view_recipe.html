@@ -620,27 +620,27 @@
 
 .brand{
   justify-self: start;
-  min-width: 220px; /* خليها مثل ما هي */
+  min-width: 220px; 
 }
 
 nav{
   justify-self: center;
   display: flex;
   gap: 10px;
-  flex-wrap: nowrap;     /* ✅ لا يلف على الديسكتوب */
+  flex-wrap: nowrap;     
   justify-content: center;
-  white-space: nowrap;   /* ✅ يمنع نزول كلمة تحت */
+  white-space: nowrap;   
 }
 
 .cta{
-  justify-self: end;     /* ✅ الزر دايم أقصى اليمين */
+  justify-self: end;     
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
     /* =========================
-       RESPONSIVE (aligned with friend's behavior)
+       RESPONSIVE 
     ========================= */
     @media (max-width: 980px){
       nav{ display:none; }
@@ -668,7 +668,7 @@ nav{
   <!-- Background pattern -->
   <div class="pattern" aria-hidden="true"></div>
 
-  <!-- Header (friend's) -->
+  <!-- Header -->
   <header>
     <div class="container nav-wrap">
       <a class="brand" href="index.html">
@@ -685,10 +685,7 @@ nav{
         <a class="nav-link" href="add-recipe.html">Add Recipe</a>
       </nav>
 
-      <div class="cta">
-        <button class="btn" onclick="location.href='login.html'">Log-in</button>
-        <button class="btn btn-primary" onclick="location.href='signup.html'">Sign-up</button>
-      </div>
+      
     </div>
   </header>
 
@@ -853,7 +850,7 @@ nav{
     </section>
   </main>
 
-  <!-- Footer (friend's) -->
+  <!-- Footer ->
   <footer class="footer">
     <div class="container footer-grid">
       <!-- About -->
@@ -900,3 +897,4 @@ nav{
   </footer>
 </body>
 </html>
+
