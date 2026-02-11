@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Recipe</title>
+  <title>Edit Recipe</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,6 +136,12 @@ nav {
   border-color: rgba(114, 92, 58, .12);
   opacity: 1;
 }
+.cta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 
 
 .btn {
@@ -253,6 +259,20 @@ input:focus, textarea:focus, select:focus {
   font-weight: 500; 
   cursor: pointer; 
   box-shadow: 0 6px 18px rgba(128,150,113,.25);
+}
+
+#currentPhotoContainer img { 
+  max-width: 180px; 
+  border-radius: 16px; 
+  margin-top: 6px; 
+  border: 1px solid var(--border);
+}
+
+#currentVideoContainer a { 
+  font-size: 13px; 
+  color: var(--matcha); 
+  text-decoration: none; 
+  opacity: .85;
 }
 
 /* Footer */
@@ -417,10 +437,14 @@ input:focus, textarea:focus, select:focus {
       <a class="nav-link" href="my-recipes.html">My Recipes</a>
       <a class="nav-link" href="add-recipe.html">Add Recipe</a>
     </nav>
-
-  
+     <div class="cta">
+      <button class="btn" onclick="location.href='login.html'">Log-in</button>
+      <button class="btn btn-primary" onclick="location.href='signup.html'">Sign-up</button>
+       </div>
+    
   </div>
 </header>
+
 
 <main>
   <h1>Add Recipe</h1>
@@ -570,6 +594,7 @@ if(videoInput){
 
 </body>
 </html>
+
 
 
 
