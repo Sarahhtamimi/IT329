@@ -448,9 +448,9 @@ input:focus, textarea:focus, select:focus {
 <main>
   <h1>Edit Recipe</h1>
 
-   <form id="editForm">
+  <form id="editForm">
     <label>Recipe Name</label>
-    <input type="text" placeholder="Choclate cake"id="name" required>
+    <input type="text"placeholder="Recipe Name" id="name" required>
 
     <label>Category</label>
     <select id="category" required>
@@ -460,30 +460,20 @@ input:focus, textarea:focus, select:focus {
     </select>
 
     <label>Description</label>
-    <textarea id="description" placeholder="This chocolate cake uses butter for flavor and a bit of oil for a never-fail moist crumb, ideal for celebrations. With more of a milk chocolate, rather than dark chocolate flavor, it's perfect for kids." rows="3" required></textarea>
+    <textarea id="description" placeholder="Description" rows="3" required></textarea>
 
-    <label>Photo</label>
-    <input type="file" id="photo" accept="image/*" required>
+    <label>Current Photo</label>
+    <div id="currentPhotoContainer"></div>
+    <label>Change Photo</label>
+    <input type="file" id="photo" accept="image/*">
 
     <label>Ingredients</label>
-    <div id="ingredients">
-      <div class="row">
-        <input type="text" placeholder="Flour" required>
-        <input type="text" placeholder="1 Cup" required>
-        <button type="button" onclick="removeRow(this)">✕</button>
-      </div>
-    </div>
+    <div id="ingredients"></div>
     <button type="button" class="add-btn" onclick="addIngredient()">+ Add Ingredient</button>
 
     <label>Instructions</label>
-    <div id="instructions">
-      <div class="row">
-        <input type="text" placeholder="Preheat the oven to 350°F. Lightly grease and flour your choice of pans: one 9 x 13 pan, two 9 round pans, or three 8 round pans. (To make a four-layer cake, use two 9round pans; the layers will each be split in half.)"required>
-        <button type="button" onclick="removeRow(this)">✕</button>
-      </div>
-    </div>
+    <div id="instructions"></div>
     <button type="button" class="add-btn" onclick="addInstruction()">+ Add Step</button>
-
 
     <label>Current Video</label>
     <div id="currentVideoContainer"></div>
@@ -668,7 +658,6 @@ if (videoInput) {
 
   </body>
  </html>
-
 
 
 
