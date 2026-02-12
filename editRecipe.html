@@ -602,10 +602,11 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // تعطيل الحفظ
-document.getElementById("recipeForm").addEventListener("submit", function(e) {
+document.getElementById("editForm").addEventListener("submit", function(e) {
   e.preventDefault();
   window.location.href = "myRecipes.html";
 });
+
 
 function addIngredient() {
   ingredientsDiv.insertAdjacentHTML("beforeend", `
@@ -658,6 +659,7 @@ if (videoInput) {
 
   </body>
  </html>
+
 
 
 
