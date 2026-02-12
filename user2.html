@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palm Glow | User Page</title>
+
+  <!-- Fonts: Titles = Fraunces, Body = Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+
+
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="global.css">
+
+  <style>
+
+
+.pattern{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .09;
+  background-image:
+    linear-gradient(45deg, rgba(179,183,146,.35) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(179,183,146,.35) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(179,183,146,.35) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(179,183,146,.35) 75%);
+  background-size: 34px 34px;
+  z-index: -2;
+}
+    /* For header and footer*/ 
+    * { box-sizing: border-box; }
+
+.container{
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+} 
+
+    :root {
+            /* Palm Glow palette */
+            --matcha: #809671;
+            --almond: #E5E0D8;
+            --pistachio: #B3B792;
+            --chai: #D2AB80;
+            --carob: #725C3A;
+            --vanilla: #E5D2B8;
+            --white: #FFFFFF;
+
+            --ink: #2C2C2C;
+            --border: rgba(114, 92, 58, .16);
+
+            --r-lg: 20px;
+            --r-md: 16px;
+            --r-pill: 999px;
+
+            --shadow: 0 16px 40px rgba(114, 92, 58, .12);
+            --shadow-soft: 0 10px 24px rgba(114, 92, 58, .10);
+
+            --container: 1100px;
+        }
+
+/* Header */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(229, 224, 216, .78);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(114, 92, 58, .10);
+        }
+
+        .nav-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 220px;
+        }
+
+        .brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .35);
+            border: 1px solid rgba(114, 92, 58, .12);
+        }
+
+        .brand .name {
+            font-family: "Cormorant Garamond", serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--carob);
+            line-height: 1;
+        }
+
+        .brand .tag {
+            font-size: 12px;
+            opacity: .75;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-link {
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            font-size: 13.5px;
+            opacity: .86;
+            transition: .2s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, .55);
+            border-color: rgba(114, 92, 58, .12);
+            opacity: 1;
+        }
+
+        .cta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: 1px solid rgba(114, 92, 58, .14);
+            background: rgba(255, 255, 255, .60);
+            padding: 10px 14px;
+            border-radius: var(--r-pill);
+            cursor: pointer;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary {
+            background: var(--matcha);
+            border-color: rgba(128, 150, 113, .55);
+            color: #fff;
+        }
+
+        
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+a:visited{
+  color: inherit;
+}
+
+
+.brand,
+.brand:hover,
+.brand:visited{
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-link,
+.nav-link:hover,
+.nav-link:visited{
+  color: var(--ink);
+  text-decoration: none;
+}
+
+         /* ---------- Footer ---------- */
+        .footer {
+            margin-top: 28px;
+            padding: 36px 0 18px;
+            background: linear-gradient(180deg, rgba(210, 171, 128, .35), rgba(229, 210, 184, .55));
+            border-top: 1px solid rgba(114, 92, 58, .12);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1.1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .footer-brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid rgba(114, 92, 58, .12);
+            background: rgba(255, 255, 255, .35);
+        }
+
+        .footer-brand b {
+            color: var(--carob);
+            font-size: 18px;
+        }
+
+        .footer-mini {
+            font-size: 12px;
+            opacity: .75;
+            margin-top: 2px;
+        }
+
+        .footer-col h4 {
+            margin: 6px 0 10px;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 20px;
+            color: var(--carob);
+        }
+
+        .footer-text {
+            margin: 0;
+            font-size: 13.5px;
+            line-height: 1.7;
+            opacity: .82;
+            max-width: 52ch;
+        }
+
+        .footer-text.small {
+            font-size: 12.8px;
+            opacity: .78;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            opacity: .82;
+        }
+
+        .subscribe {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .subscribe input {
+            flex: 1 1 180px;
+            padding: 12px 14px;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(114, 92, 58, .14);
+            background: rgba(255, 255, 255, .70);
+            outline: none;
+        }
+
+        .subscribe input:focus {
+            border-color: rgba(128, 150, 113, .55);
+        }
+
+        .subscribe button {
+            padding: 12px 16px;
+            border-radius: var(--r-pill);
+            border: 1px solid rgba(128, 150, 113, .55);
+            background: var(--matcha);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .subscribe button:hover {
+            opacity: .93;
+        }
+
+        .sub-note {
+            margin-top: 10px;
+            font-size: 12.5px;
+            color: var(--carob);
+            opacity: .9;
+            min-height: 16px;
+        }
+
+        .footer-bottom {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(114, 92, 58, .10);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12.5px;
+            opacity: .84;
+        }
+
+        .footer-bottom .made {
+            font-weight: 600;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 980px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-text {
+                max-width: 100%;
+            }
+        }
+  
+
+/* Page background */
+html, body{
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  color: #2C2C2C;
+  background: linear-gradient(180deg, #E5E0D8, rgba(229, 224, 216, .85));
+}
+
+
+/* Main container */
+.dashboard{
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Welcome row */
+.top-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.top-row h2{
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 34px;
+  color: #725C3A;
+}
+
+/* Logout */
+.logout-link{
+  text-decoration: none;
+  font-weight: 600;
+  color: #725C3A;
+  border: 1px solid rgba(114,92,58,.45);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(229,210,184,.55);
+  transition: .2s;
+}
+.logout-link:hover{ background: rgba(210,171,128,.45); }
+
+/* Section cards */
+.section-box{
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(114,92,58,.12);
+  border-radius: 20px;
+
+  padding: 5px 18px 18px; /* top right/left bottom */
+
+  margin-bottom: 18px;
+  box-shadow: 0 10px 24px rgba(114,92,58,.10);
+}
+
+.section-box h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-size: 34px;
+  color: #725C3A;
+  margin-bottom: 12px;
+}
+
+
+/*  PROFILE CARD */
+.profile-card{
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.avatar{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(128,150,113,.35);
+  background: rgba(229,224,216,.6);
+}
+
+.profile-right{
+  flex: 1;
+  min-width: 220px;
+}
+
+
+
+.profile-name{
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #2C2C2C;
+}
+
+.profile-meta{ display: grid; gap: 8px; }
+
+.meta-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  opacity: .9;
+}
+
+.meta-icon{
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(128,150,113,.16);
+  border: 1px solid rgba(128,150,113,.22);
+}
+
+/* My recipes row + totals */
+.my-recipes-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.my-recipes-row a{
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  color: #725C3A;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+.totals{
+  background: rgba(229,210,184,.55);
+  border: 1px solid rgba(114,92,58,.12);
+  padding: 10px 12px;
+  border-radius: 999px;
+}
+
+.totals span{
+  display: inline-block;
+  margin-right: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2C2C2C;
+  opacity: .88;
+}
+
+/* Mood / pills */
+.mood-wrap{ margin-bottom: 10px; }
+
+.mood-title{
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #725C3A;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-shadow: 0 8px 20px rgba(114,92,58,.18);
+  position: relative;
+}
+
+.mood-title::after{
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: rgba(128,150,113,.45);
+}
+
+
+
+.mood-pills{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill{
+  border: 1px solid rgba(114,92,58,.12);
+  background: rgba(255,255,255,.55);
+  color: #2C2C2C;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s;
+}
+.pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.70); }
+.pill.active{ background: #809671; color: #fff; border-color: rgba(128,150,113,.35); }
+
+
+/* Responsive */
+@media (max-width: 700px){
+  .profile-card{ flex-direction: column; align-items: flex-start; }
+  .avatar{ width: 110px; height: 110px; }
+  .totals{ width: 100%; }
+  .totals span{ display: block; margin: 0; }
+}
+
+/* Dark mode */
+body.dark{
+  background-color: #111A2B;
+  color: #E8ECF1;
+}
+body.dark .section-box{
+  background-color: #1B2942 !important;
+  color: #E8ECF1 !important;
+  border-color: rgba(199,212,229,.25) !important;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+}
+body.dark .pill{
+  background: rgba(199,212,229,.10);
+  border-color: rgba(199,212,229,.25);
+  color: #E8ECF1;
+}
+body.dark .pill.active{
+  background: #A8B288;
+  color: #111A2B;
+}
+body.dark .recipe-card{
+  background-color: rgba(27,41,66,.85);
+  border-color: rgba(199,212,229,.25);
+}
+body.dark .card-title a{ color: #E8ECF1; }
+
+.journey-line{
+  margin: 18px 0 35px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #725C3A;
+  letter-spacing: .4px;
+  text-shadow: 0 12px 28px rgba(114,92,58,.20);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+  margin-top: -20px;
+  margin-bottom: 30px;
+  /*margin-top: 40px;    space from profile card */
+  /*margin-bottom: 25px;  space before My recipes section */
+ 
+}
+
+.section-box.my-recipes-box{
+  padding: 12px 18px;
+  height: auto;
+  min-height: 0;
+}
+
+.section-box.my-recipes-box .my-recipes-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+}
+
+.section-box.my-recipes-box .my-recipes-row a,
+.section-box.my-recipes-box .totals{
+  margin: 0;
+}
+
+.fav-title{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fav-heart{
+  color: #A44A5A; /* same as Palm Treats ribbon */
+  font-size: 22px;
+}
+
+/* Pill animation (on load) */
+@keyframes pillPop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pillGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(128,150,113,0);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(128,150,113,0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(128,150,113,0);
+  }
+}
+
+/* Class that triggers the animation */
+.pill.animate-pill {
+  animation: pillPop 0.6s ease-out, pillGlow 1.2s ease-in-out;
+}
+
+.pill{
+  opacity: 1;
+  transform: none;
+}
+
+.pill.pre-animate{
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+}
+
+
+
+
+
+.recipes-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(114,92,58,.12);
+}
+
+.recipes-table th{
+  text-align: left;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #725C3A;
+  background: rgba(229,210,184,.55);
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: .3px;
+}
+
+.recipes-table td{
+  padding: 12px 14px;
+  font-size: 13.5px;
+  border-top: 1px solid rgba(114,92,58,.10);
+  vertical-align: middle;
+}
+
+.recipes-table tr:hover{
+  background: rgba(229,224,216,.35);
+}
+
+.table-photo{
+  width: 65px;
+  height: 50px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(114,92,58,.12);
+}
+
+.creator-cell{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.creator-cell img{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(114,92,58,.12);
+}
+
+.remove-table-btn{
+  border: 1px solid rgba(114,92,58,.18);
+  background: rgba(255,255,255,.65);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #8B1A1A;
+  transition: .2s;
+}
+
+.remove-table-btn:hover{
+  background: rgba(255,255,255,.9);
+}
+
+
+  </style>
+</head>
+
+<body>
+
+     <!-- Background pattern -->
+  <div class="pattern" aria-hidden="true"></div>
+
+
+  <!-- NAV -->
+   <!-- Header -->
+    <header>
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="images/palmLogo.png" alt="Palm Glow Logo">
+      <div>
+        <div class="name">Palm Glow</div>
+        <div class="tag">healthy global recipes • Saudi touch</div>
+      </div>
+    </a>
+
+    <nav>
+      <a class="nav-link" href="user2.html">User Page</a>
+      <a class="nav-link" href="myRecipes.html">My Recipes</a>
+      <a class="nav-link" href="addRecipe.html">Add Recipe</a>
+    </nav>
+
+    <div class="cta">
+      <button class="btn" onclick="location.href='home.html'">Log-out</button>
+    </div>
+  </div>
+</header>
+
+
+
+  <main class="dashboard">
+
+    <!-- Welcome + logout -->
+    <div class="top-row">
+      <h2>Welcome, <span id="userFirstName">User</span>!</h2>
+      
+    </div>
+
+    <p class="journey-line">Let’s continue your wellness journey 🌿</p>
+    <!-- User information -->
+   <section class="section-box">
+  <div class="profile-card">
+
+    <div class="profile-left">
+      <img id="infoPhoto" class="avatar" src="images/Avatar.png" alt="Profile photo">
+    </div>
+
+    <div class="profile-right">
+      
+
+      <h4 class="profile-name">
+        <span id="infoFirst">---</span> <span id="infoLast">---</span>
+      </h4>
+
+      <div class="profile-meta">
+        <div class="meta-row">
+          <span class="meta-icon">📧</span>
+          <span id="infoEmail">---</span>
+        </div>
+
+    
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+  <!-- My recipes link + totals -->
+<section class="section-box my-recipes-box">
+  <div class="my-recipes-row">
+    <div>
+      <a  href="myRecipes.html">My Recipes</a>
+    </div>
+
+    <div class="totals">
+      <span>Total recipes: <span id="totalRecipes">0</span></span>
+      <span>Total likes: <span id="totalLikes">0</span></span>
+    </div>
+  </div>
+</section>
+
+<h4 class="mood-title">What are you in the mood for today?</h4>
+    <!-- All available recipes -->
+    <section class="section-box">
+      <h3>All Available Recipes</h3>
+
+      <div class="mood-wrap">
+  
+
+  <div class="mood-pills" id="categoryPills">
+    <button type="button" class="pill active" data-category="all">All</button>
+    <button type="button" class="pill" data-category="Glow Plates">Glow Plates</button>
+    <button type="button" class="pill" data-category="Glow Sips">Glow Sips</button>
+    <button type="button" class="pill" data-category="Palm Treats">Palm Treats</button>
+  </div>
+</div>
+
+
+<table class="recipes-table">
+  <thead>
+    <tr>
+      <th>Recipe</th>
+      <th>Photo</th>
+      <th>Creator</th>
+      <th>Likes</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody id="allRecipesBody"></tbody>
+</table>
+
+
+    </section>
+
+    <!-- Favourite recipes -->
+    <section class="section-box">
+      <h3 class="fav-title">My Favourite Recipes <span class="fav-heart">❤</span></h3>
+
+
+     <table class="recipes-table">
+  <thead>
+    <tr>
+      <th>Recipe</th>
+      <th>Photo</th>
+      <th>Creator</th>
+      <th>Likes</th>
+      <th>Category</th>
+      <th>Remove</th>
+    </tr>
+  </thead>
+  <tbody id="favRecipesBody"></tbody>
+</table>
+
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <!-- About -->
+            <div class="footer-about">
+                <div class="footer-brand">
+                    <img src="images/palmLogo.png" alt="Palm Glow Logo">
+                    <div>
+                        <b>Palm Glow</b>
+                        <div class="footer-mini">clean wellness • warm Saudi touch</div>
+                    </div>
+                </div>
+
+                <p class="footer-text">
+
+                    Save your favorites, explore quick ideas, and add your own creations — all in one warm vibe.
+                </p>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <div class="footer-links">
+                    <span>Email: help@palmglow.com</span>
+                    <span>Location: Riyadh, Saudi Arabia</span>
+                </div>
+            </div>
+
+            <!-- Subscribe -->
+            <div class="footer-col">
+                <h4>Subscribe</h4>
+                <p class="footer-text small">Get new recipes & wellness picks </p>
+
+                <form class="subscribe" id="subscribeForm">
+                    <input type="email" id="subEmail" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+
+                <div class="sub-note" id="subNote" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <span>© 2026 Palm Glow</span>
+
+        </div>
+    </footer>
+
+ 
+
+
+    <script>
+  var user = {
+    firstName: "Jana",
+    lastName: "Abdulrahman",
+    email: "jana@example.com",
+    photo: "images/user3.jpeg"
+  };
+
+  var allRecipes = [
+    { name:"Matcha with Rose Water Foam", photo:"images/glowSip(4).png", creatorName:"Ahmad", creatorPhoto:"images/creator3.jpeg", likes:18, category:"Glow Sips", link:"view_recipe.html" },
+    { name:"Grilled Shrimp with Date Glaze & Greens", photo:"images/glowPlate(2).png", creatorName:"Maha", creatorPhoto:"images/creator1.jpeg", likes:25, category:"Glow Plates", link:"view_recipe.html" },
+    { name:"Cardamom Almond Baked Oat Squares", photo:"images/palmTreat(3).png", creatorName:"Lama", creatorPhoto:"images/creator2.jpeg", likes:9, category:"Palm Treats", link:"view_recipe.html" },
+    { name:"Salmon with Qahwa Spice Rub", photo:"images/glowPlate(1).png", creatorName:"Omar", creatorPhoto:"images/creator4.jpeg", likes:31, category:"Glow Plates", link:"view_recipe.html" },
+    { name:"Date Vanilla Protein Smoothie", photo:"images/glowSip(2).png", creatorName:"Lama", creatorPhoto:"images/creator2.jpeg", likes:14, category:"Glow Sips", link:"view_recipe.html" },
+    { name:"Date & Almond Yogurt Bowl", photo:"images/palmTreat(1).png", creatorName:"Omar", creatorPhoto:"images/creator4.jpeg", likes:22, category:"Palm Treats", link:"view_recipe.html" }
+  ];
+
+  var favourites = [
+    { name:"Lemon Za’atar Chicken with Quinoa", photo:"images/glowPlate(2).png", creatorName:"Maha", creatorPhoto:"images/creator1.jpeg", likes:25, category:"Glow Plates", link:"view_recipe.html" },
+    { name:"Date Vanilla Protein Smoothie", photo:"images/glowSip(2).png", creatorName:"Lama", creatorPhoto:"images/creator2.jpeg", likes:14, category:"Glow Sips", link:"view_recipe.html" }
+  ];
+
+  // Fill welcome + info
+  document.getElementById("userFirstName").textContent = user.firstName;
+  document.getElementById("infoFirst").textContent = user.firstName;
+  document.getElementById("infoLast").textContent = user.lastName;
+  document.getElementById("infoEmail").textContent = user.email;
+ // Photo (from localStorage, fallback to default)
+const DEFAULT_PHOTO = "images/Avatar.png";
+const savedPhoto = localStorage.getItem("userPhoto");
+document.getElementById("infoPhoto").src = savedPhoto || DEFAULT_PHOTO;
+
+
+
+  // Totals
+  document.getElementById("totalRecipes").textContent = allRecipes.length;
+  var likesSum = 0;
+  for (var i=0; i<allRecipes.length; i++){ likesSum += allRecipes[i].likes; }
+  document.getElementById("totalLikes").textContent = likesSum;
+
+  //TABLE RENDER (must be before calling renderAll/renderFavourites)
+  var allBody = document.getElementById("allRecipesBody");
+  var favBody = document.getElementById("favRecipesBody");
+  var activeCategory = "all";
+
+  function createRow(r, isFav){
+    var tr = document.createElement("tr");
+
+    tr.innerHTML =
+      "<td><a href='" + r.link + "' style='color:#725C3A; font-weight:700; text-decoration:underline;'>" + r.name + "</a></td>" +
+      "<td><img class='table-photo' src='" + r.photo + "' alt='recipe photo'></td>" +
+      "<td><div class='creator-cell'><img src='" + r.creatorPhoto + "' alt='creator'><span>" + r.creatorName + "</span></div></td>" +
+      "<td>❤ " + r.likes + "</td>" +
+      "<td>" + r.category + "</td>";
+
+    if (isFav){
+      tr.innerHTML += "<td><button type='button' class='remove-table-btn'>Remove</button></td>";
+
+      var btn = tr.querySelector(".remove-table-btn");
+      btn.onclick = function(){
+        for (var i=0; i<favourites.length; i++){
+          if (favourites[i].name === r.name){
+            favourites.splice(i, 1);
+            break;
+          }
+        }
+        renderFavourites(activeCategory);
+      };
+    }
+
+    return tr;
+  }
+
+  function renderAll(category){
+    allBody.innerHTML = "";
+    for (var i=0; i<allRecipes.length; i++){
+      var r = allRecipes[i];
+      if (category !== "all" && r.category !== category) continue;
+      allBody.appendChild(createRow(r, false));
+    }
+  }
+
+  function renderFavourites(category){
+    favBody.innerHTML = "";
+    for (var i=0; i<favourites.length; i++){
+      var r = favourites[i];
+      if (category !== "all" && r.category !== category) continue;
+      favBody.appendChild(createRow(r, true));
+    }
+  }
+
+  // ===== PILLS FILTERING
+  var pills = document.getElementById("categoryPills");
+  pills.onclick = function(e){
+    var btn = e.target.closest("button");
+    if (!btn) return;
+
+    var allBtns = pills.querySelectorAll(".pill");
+    for (var i=0; i<allBtns.length; i++){ allBtns[i].classList.remove("active"); }
+    btn.classList.add("active");
+
+    activeCategory = btn.getAttribute("data-category");
+    renderAll(activeCategory);
+    renderFavourites(activeCategory);
+  };
+
+  // initial render 
+  renderAll("all");
+  renderFavourites("all");
+
+  // Animate pills on view 
+  (function () {
+    var pillsWrap = document.getElementById("categoryPills");
+    if (!pillsWrap) return;
+
+    var pillBtns = pillsWrap.querySelectorAll(".pill");
+    for (var i = 0; i < pillBtns.length; i++) {
+      pillBtns[i].classList.add("pre-animate");
+    }
+
+    var hasAnimated = false;
+
+    var observer = new IntersectionObserver(function (entries) {
+      if (hasAnimated) return;
+
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          hasAnimated = true;
+
+          for (let i = 0; i < pillBtns.length; i++) {
+            setTimeout(function () {
+              pillBtns[i].classList.remove("pre-animate");
+              pillBtns[i].classList.add("animate-pill");
+            }, i * 160);
+          }
+
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.45 });
+
+    observer.observe(pillsWrap);
+  })();
+</script>
+
+
+
+</body>
+</html>
