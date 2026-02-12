@@ -530,60 +530,75 @@ input:focus, textarea:focus, select:focus {
     <span>© 2026 Palm Glow</span>
   </div>
  <script>
-const params = new URLSearchParams(window.location.search);
-const recipeId = parseInt(params.get("id"), 10);
-const recipes = JSON.parse(localStorage.getItem("recipes") || "[]");
-const currentRecipe = recipes[recipeId];
+document.getElementById("editForm")
 
-if (!currentRecipe) {
-  alert("Recipe not found");
-  window.location.href = "myRecipes.html";
-}
 
-document.getElementById("name").value = currentRecipe.name;
-document.getElementById("category").value = currentRecipe.category;
-document.getElementById("description").value = currentRecipe.description;
-document.getElementById("videoLink").value = currentRecipe.videoLink || "";
+// === DEFAULT RECIPE WITH VIDEO ===
+const defaultRecipe = {
+  name: "Quinoa Bowl with Loomi Tahini Dressing",
+  category: "Glow plates",
+  description: "A nourishing quinoa bowl topped with roasted vegetables and a rich loomi tahini dressing.",
+  image: "images/dish4.jpg",
+  ingredients: [
+    { name: "Quinoa", qty: "1 cup" },
+    { name: "Chickpeas", qty: "1 cup" },
+    { name: "Sweet potato", qty: "1 medium, cubed" },
+    { name: "Garlic", qty: "1 clove, minced" },
+    { name: "Red onion", qty: "¼ cup, sliced" },
+    { name: "Cherry tomatoes", qty: "1 cup" },
+    { name: "Avocado", qty: "1 sliced" },
+    { name: "Tahini", qty: "3 tbsp" },
+    { name: "Loomi powder", qty: "½ tsp" }
+  ],
+  instructions: [
+    "Preheat oven and season sweet potatoes.",
+    "Roast until golden and tender.",
+    "Whisk tahini with lemon, loomi, garlic and olive oil.",
+    "Layer quinoa, vegetables and chickpeas in a bowl.",
+    "Drizzle dressing and serve."
+  ],
+  videoLink: "https://youtu.be/m9dI0OcQx68"
+};
 
-// صورة حالية
-if (currentRecipe.photo) {
-  document.getElementById("currentPhotoContainer").innerHTML = `
-    <p>Current Photo:</p>
-    <img src="${currentRecipe.photo}">
-  `;
-}
-
-// فيديو حالي
-if (currentRecipe.videoLink) {
-  document.getElementById("currentVideoContainer").innerHTML = `
-    <p>Current Video:</p>
-    <a href="${currentRecipe.videoLink}" target="_blank">
-      ${currentRecipe.videoLink}
-    </a>
-  `;
-}
-
-// Ingredients
 const ingredientsDiv = document.getElementById("ingredients");
-currentRecipe.ingredients.forEach(i => {
-  ingredientsDiv.insertAdjacentHTML("beforeend", `
-    <div class="row">
-      <input type="text" value="${i.ingredient}" required>
-      <input type="text" value="${i.quantity}" required>
-      <button type="button" onclick="removeRow(this)">✕</button>
-    </div>
-  `);
-});
-
-// Instructions
 const instructionsDiv = document.getElementById("instructions");
-currentRecipe.instructions.forEach(step => {
-  instructionsDiv.insertAdjacentHTML("beforeend", `
-    <div class="row">
-      <input type="text" value="${step}" required>
-      <button type="button" onclick="removeRow(this)">✕</button>
-    </div>
-  `);
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("name").value = defaultRecipe.name;
+  document.getElementById("category").value = defaultRecipe.category;
+  document.getElementById("description").value = defaultRecipe.description;
+  document.getElementById("videoLink").value = defaultRecipe.videoLink;
+
+  // show current photo
+  document.getElementById("currentPhotoContainer").innerHTML =
+    `<img src="${defaultRecipe.image}" alt="Recipe Photo">`;
+
+  // show current video
+  document.getElementById("currentVideoContainer").innerHTML =
+    `<a href="${defaultRecipe.videoLink}" target="_blank">Watch Current Video</a>`;
+
+  // ingredients
+  defaultRecipe.ingredients.forEach(ing => {
+    ingredientsDiv.insertAdjacentHTML("beforeend", `
+      <div class="row">
+        <input type="text" value="${ing.name}" required>
+        <input type="text" value="${ing.qty}" required>
+        <button type="button" onclick="removeRow(this)">✕</button>
+      </div>
+    `);
+  });
+
+  // instructions
+  defaultRecipe.instructions.forEach(step => {
+    instructionsDiv.insertAdjacentHTML("beforeend", `
+      <div class="row">
+        <input type="text" value="${step}" required>
+        <button type="button" onclick="removeRow(this)">✕</button>
+      </div>
+    `);
+  });
+
 });
 
 // تعطيل الحفظ
@@ -643,6 +658,8 @@ if (videoInput) {
 
   </body>
  </html>
+
+
 
 
 
