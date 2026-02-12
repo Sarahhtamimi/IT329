@@ -451,7 +451,7 @@ input:focus, textarea:focus, select:focus {
 
   <form id="recipeForm">
     <label>Recipe Name</label>
-    <input type="text" placeholder="Recipe Name"id="name" required>
+    <input type="text" placeholder="Choclate cake"id="name" required>
 
     <label>Category</label>
     <select id="category" required>
@@ -461,7 +461,7 @@ input:focus, textarea:focus, select:focus {
     </select>
 
     <label>Description</label>
-    <textarea id="description" placeholder="Description" rows="3" required></textarea>
+    <textarea id="description" placeholder="This chocolate cake uses butter for flavor and a bit of oil for a never-fail moist crumb, ideal for celebrations. With more of a milk chocolate, rather than dark chocolate flavor, it's perfect for kids." rows="3" required></textarea>
 
     <label>Photo</label>
     <input type="file" id="photo" accept="image/*" required>
@@ -469,8 +469,8 @@ input:focus, textarea:focus, select:focus {
     <label>Ingredients</label>
     <div id="ingredients">
       <div class="row">
-        <input type="text" placeholder="Ingredient" required>
-        <input type="text" placeholder="Quantity" required>
+        <input type="text" placeholder="Flour" required>
+        <input type="text" placeholder="1 Cup" required>
         <button type="button" onclick="removeRow(this)">✕</button>
       </div>
     </div>
@@ -479,7 +479,7 @@ input:focus, textarea:focus, select:focus {
     <label>Instructions</label>
     <div id="instructions">
       <div class="row">
-        <input type="text" placeholder="Step" required>
+        <input type="text" placeholder="Preheat the oven to 350°F. Lightly grease and flour your choice of pans: one 9 x 13 pan, two 9 round pans, or three 8 round pans. (To make a four-layer cake, use two 9round pans; the layers will each be split in half.)"required>
         <button type="button" onclick="removeRow(this)">✕</button>
       </div>
     </div>
@@ -594,6 +594,7 @@ if(videoInput){
 
 </body>
 </html>
+
 
 
 
