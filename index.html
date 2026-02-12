@@ -1,14 +1,14 @@
-<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css"> <!--Not sure about the link if its works or not-->
-        <title>Home page</title>
-    </head>
-    <script src="script.js"></script>
-    <body>
-    </body>
-=======
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Home page</title>
+</head>
+<script src="script.js"></script>
+
+<body>
+</body>
 <!doctype html>
 <html lang="en">
 
@@ -26,7 +26,7 @@
 
     <style>
         :root {
-            /* Palm Glow palette (your theme) */
+            /* Palm Glow Theme  */
             --matcha: #809671;
             --almond: #E5E0D8;
             --pistachio: #B3B792;
@@ -129,7 +129,7 @@
             width: 120px;
             height: 120px;
             background: transparent;
-            /* نفس الخلفية */
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -143,7 +143,7 @@
 
 
 
-        /* simple palm mark (colors from theme) */
+
         .logo-box svg {
             display: block;
         }
@@ -185,7 +185,6 @@
             cursor: pointer;
             font-weight: 600;
             min-width: 240px;
-            /* figure-like wide button */
             text-align: center;
             transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
             box-shadow: 0 14px 30px rgba(114, 92, 58, .10);
@@ -225,7 +224,7 @@
             color: rgba(114, 92, 58, .85);
         }
 
-        /* tiny toast for feedback */
+        /*  for feedback */
         .toast-wrap {
             position: fixed;
             right: 16px;
@@ -309,17 +308,18 @@
     <div class="glow" id="glow" aria-hidden="true"></div>
 
     <main class="frame" aria-label="System Homepage">
-       
-            <div class="logo-box" aria-label="Logo">
-                <img src="images/palmLogo.png" alt="Palm Glow Logo" class="logo-img">
-            </div>
+
+        <div class="logo-box" aria-label="Logo">
+            <img src="images/palmLogo.png" alt="Palm Glow Logo" class="logo-img">
+        </div>
         </div>
 
-        <!-- center content -->
+
         <section class="inner">
             <h1 class="app-name">Palm Glow</h1>
             <p class="subtitle">
-Healthy international recipes for everyday balance. Global flavors, finished with a warm Saudi touch.            </p>
+                Healthy international recipes for everyday balance. Global flavors, finished with a warm Saudi touch.
+            </p>
 
             <div class="actions">
                 <button class="btn btn-primary" id="loginBtn" type="button">Log-in</button>
@@ -334,7 +334,7 @@ Healthy international recipes for everyday balance. Global flavors, finished wit
     <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
     <script>
-        // cursor glow (premium micro interaction)
+
         const glow = document.getElementById("glow");
         window.addEventListener("mousemove", (e) => {
             glow.style.left = e.clientX + "px";
@@ -342,7 +342,7 @@ Healthy international recipes for everyday balance. Global flavors, finished wit
             glow.style.opacity = "1";
         });
 
-        // small toast notifications (demo behavior)
+
         const toastWrap = document.getElementById("toastWrap");
         function toast(title, msg) {
             const t = document.createElement("div");
@@ -364,7 +364,7 @@ Healthy international recipes for everyday balance. Global flavors, finished wit
         });
 
 
-        // subtle press feedback on keyboard (accessibility)
+
         window.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
                 toast("Tip", "Use Enter on focused button/link for quick access.");
@@ -374,4 +374,5 @@ Healthy international recipes for everyday balance. Global flavors, finished wit
 </body>
 
 >>>>>>> Stashed changes
+
 </html>
