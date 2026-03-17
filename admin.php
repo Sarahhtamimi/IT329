@@ -827,7 +827,7 @@
 
 
       <div class="cta">
-        <button class="btn" onclick="location.href='home.html'">Sign out</button>
+        <button class="btn" onclick="location.href='index.html'">Sign out</button>
 
       </div>
 
