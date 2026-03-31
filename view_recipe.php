@@ -1,4 +1,101 @@
-<?php include 'includes/auth_user.php'; ?>
+<?php
+include 'auth_any.php';
+include 'db_connection.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    die("Recipe ID is missing.");
+}
+
+$recipeID = $_GET['id'];
+$userID = $_SESSION['userID'];
+$userType = $_SESSION['userType'];
+
+$sqlRecipe = "SELECT Recipe.id, Recipe.userID, Recipe.categoryID,
+                     Recipe.NAME AS recipeName,
+                     Recipe.description,
+                     Recipe.photoFileName,
+                     Recipe.videoFilePath,
+                     User.firstName, User.lastName,
+                     User.photoFileName AS userPhoto,
+                     RecipeCategory.categoryName
+              FROM Recipe
+              JOIN User ON Recipe.userID = User.id
+              JOIN RecipeCategory ON Recipe.categoryID = RecipeCategory.id
+              WHERE Recipe.id = ?";
+
+$stmtRecipe = $conn->prepare($sqlRecipe);
+$stmtRecipe->bind_param("i", $recipeID);
+$stmtRecipe->execute();
+$resultRecipe = $stmtRecipe->get_result();
+
+if ($resultRecipe->num_rows == 0) {
+    die("Recipe not found.");
+}
+
+$recipe = $resultRecipe->fetch_assoc();
+
+$sqlIngredients = "SELECT * FROM Ingredients WHERE recipeID = ?";
+$stmtIngredients = $conn->prepare($sqlIngredients);
+$stmtIngredients->bind_param("i", $recipeID);
+$stmtIngredients->execute();
+$resultIngredients = $stmtIngredients->get_result();
+
+$sqlInstructions = "SELECT * FROM Instructions WHERE recipeID = ? ORDER BY stepOrder ASC";
+$stmtInstructions = $conn->prepare($sqlInstructions);
+$stmtInstructions->bind_param("i", $recipeID);
+$stmtInstructions->execute();
+$resultInstructions = $stmtInstructions->get_result();
+
+$sqlComments = "SELECT Comment.id, Comment.recipeID, Comment.userID,
+                       Comment.COMMENT AS userComment,
+                       Comment.DATE AS commentDate,
+                       User.firstName, User.lastName
+                FROM Comment
+                JOIN User ON Comment.userID = User.id
+                WHERE Comment.recipeID = ?
+                ORDER BY Comment.DATE DESC";
+
+$stmtComments = $conn->prepare($sqlComments);
+$stmtComments->bind_param("i", $recipeID);
+$stmtComments->execute();
+$resultComments = $stmtComments->get_result();
+
+$isCreator = ($recipe['userID'] == $userID);
+$isAdmin = ($userType == 'admin');
+
+$alreadyLiked = false;
+$alreadyFavourite = false;
+$alreadyReported = false;
+
+if (!$isCreator && !$isAdmin) {
+    $sqlLike = "SELECT * FROM Likes WHERE userID = ? AND recipeID = ?";
+    $stmtLike = $conn->prepare($sqlLike);
+    $stmtLike->bind_param("ii", $userID, $recipeID);
+    $stmtLike->execute();
+    $resultLike = $stmtLike->get_result();
+    if ($resultLike->num_rows > 0) {
+        $alreadyLiked = true;
+    }
+
+    $sqlFavourite = "SELECT * FROM Favourites WHERE userID = ? AND recipeID = ?";
+    $stmtFavourite = $conn->prepare($sqlFavourite);
+    $stmtFavourite->bind_param("ii", $userID, $recipeID);
+    $stmtFavourite->execute();
+    $resultFavourite = $stmtFavourite->get_result();
+    if ($resultFavourite->num_rows > 0) {
+        $alreadyFavourite = true;
+    }
+
+    $sqlReport = "SELECT * FROM Report WHERE userID = ? AND recipeID = ?";
+    $stmtReport = $conn->prepare($sqlReport);
+    $stmtReport->bind_param("ii", $userID, $recipeID);
+    $stmtReport->execute();
+    $resultReport = $stmtReport->get_result();
+    if ($resultReport->num_rows > 0) {
+        $alreadyReported = true;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +103,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Recipe</title>
 
-  <!-- Fonts  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* Palm Glow palette  */
       --matcha: #809671;
       --almond: #E5E0D8;
       --pistachio: #B3B792;
@@ -21,17 +116,13 @@
       --carob: #725C3A;
       --vanilla: #E5D2B8;
       --white: #FFFFFF;
-
       --ink: #2C2C2C;
       --border: rgba(114, 92, 58, .16);
-
       --r-lg: 20px;
       --r-md: 16px;
       --r-pill: 999px;
-
       --shadow: 0 16px 40px rgba(114, 92, 58, .12);
       --shadow-soft: 0 10px 24px rgba(114, 92, 58, .10);
-
       --container: 1100px;
     }
 
@@ -45,7 +136,6 @@
       background: linear-gradient(180deg, var(--almond), rgba(229, 224, 216, .85));
     }
 
-    /* background pattern  */
     .pattern{
       position: fixed;
       inset: 0;
@@ -65,9 +155,6 @@
       margin: 0 auto;
     }
 
-    /* =========================
-       HEADER 
-    ========================= */
     header{
       position: sticky;
       top: 0;
@@ -78,11 +165,11 @@
     }
 
     .nav-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:14px 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
     }
 
     .brand{
@@ -90,6 +177,7 @@
       align-items:center;
       gap:12px;
       min-width: 220px;
+      justify-self: start;
     }
 
     .brand img{
@@ -117,10 +205,12 @@
     }
 
     nav{
+      justify-self: center;
       display:flex;
       gap:10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content:center;
+      white-space: nowrap;
     }
 
     .nav-link{
@@ -137,37 +227,6 @@
       border-color: rgba(114,92,58,.12);
       opacity: 1;
     }
-
-    .cta{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    .btn{
-      border:1px solid rgba(114,92,58,.14);
-      background: rgba(255,255,255,.60);
-      padding:10px 14px;
-      border-radius: var(--r-pill);
-      cursor:pointer;
-      font-weight:600;
-      transition:.2s;
-      font-family: Inter;
-    }
-
-    .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .btn-primary{
-      background: var(--matcha);
-      border-color: rgba(128,150,113,.55);
-      color:#fff;
-    }
-
-    /* =========================
-    ========================= */
 
     img{ max-width:100%; display:block; }
 
@@ -394,7 +453,7 @@
       margin-bottom: 40px;
     }
 
-    .viewRecipe_videoWrap iframe{
+    .viewRecipe_videoWrap video{
       width: 100%;
       height: 520px;
       border: 0;
@@ -487,9 +546,6 @@
       color: var(--carob);
     }
 
-    /* =========================
-       FOOTER 
-    ========================= */
     .footer{
       margin-top: 28px;
       padding: 36px 0 18px;
@@ -608,55 +664,33 @@
       font-size: 12.5px;
       opacity: .84;
     }
+    .viewRecipe_btn[disabled]{
+      opacity: .65;
+      cursor: not-allowed;
+      background: #d9d9d9;
+      color: #666;
+      border-color: #c9c9c9;
+      box-shadow: none;
+    }
 
-.nav-wrap{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr; 
-  align-items: center;
-  gap: 16px;
-  padding: 14px 0;
-}
-
-.brand{
-  justify-self: start;
-  min-width: 220px; 
-}
-
-nav{
-  justify-self: center;
-  display: flex;
-  gap: 10px;
-  flex-wrap: nowrap;     
-  justify-content: center;
-  white-space: nowrap;   
-}
-
-.cta{
-  justify-self: end;     
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-    /* =========================
-       RESPONSIVE 
-    ========================= */
+    .viewRecipe_btn[disabled]:hover{
+      transform: none;
+      box-shadow: none;
+    }
     @media (max-width: 980px){
       nav{ display:none; }
       .footer-grid{ grid-template-columns: 1fr; }
       .footer-text{ max-width: 100%; }
-
       .viewRecipe_header{ min-height: 320px; }
       .viewRecipe_headerTitle{ padding: 26px; }
       .viewRecipe_headerTitle h1{ font-size: 34px; }
-
       .viewRecipe_2Cards{ flex-direction: column; }
-      .viewRecipe_videoWrap iframe{ height: 320px; }
+      .viewRecipe_videoWrap video{ height: 320px; }
     }
 
     @media (max-width: 768px){
       .viewRecipe_metaCard{ flex-direction: column; align-items: flex-start; }
-      .viewRecipe_videoWrap iframe{ height: 260px; }
+      .viewRecipe_videoWrap video{ height: 260px; }
       .viewRecipe_comment{ padding: 18px; }
       .viewRecipe_comment p{ font-size: 13.5px; }
     }
@@ -664,13 +698,11 @@ nav{
 </head>
 
 <body>
-  <!-- Background pattern -->
   <div class="pattern" aria-hidden="true"></div>
 
-  <!-- Header  -->
   <header>
     <div class="container nav-wrap">
-      <a class="brand" href="index.html">
+      <a class="brand" href="index.php">
         <img src="images/palmLogo.png" alt="Palm Glow Logo">
         <div>
           <div class="name">Palm Glow</div>
@@ -679,180 +711,157 @@ nav{
       </a>
 
       <nav>
-        <a class="nav-link" href="user2.html">User Page</a>
-        <a class="nav-link" href="myRecipes.html">My Recipes</a>
-        <a class="nav-link" href="addRecipe.html">Add Recipe</a>
+        <a class="nav-link" href="user.php">User Page</a>
+        <a class="nav-link" href="myRecipes.php">My Recipes</a>
+        <a class="nav-link" href="addRecipe.php">Add Recipe</a>
       </nav>
-
-     
     </div>
   </header>
 
-  <!-- header img-->
   <section class="viewRecipe_header">
-    <img class="viewRecipe_headerImg" src="images/dish4.jpg" alt="Recipe cover">
+    <img class="viewRecipe_headerImg" src="images/<?php echo $recipe['photoFileName']; ?>" alt="Recipe cover">
     <div class="viewRecipe_headerTitle">
-      <h1>Quinoa Bowl<br/>with Loomi Tahini Dressing</h1>
+      <h1><?php echo $recipe['recipeName']; ?></h1>
     </div>
   </section>
 
   <main>
-    <!-- chef info-->
     <section class="viewRecipe_metaCard">
       <div class="viewRecipe_author">
-        <img class="viewRecipe_avatar" src="images/creator1.jpeg" alt="Author">
+        <img class="viewRecipe_avatar" src="images/<?php echo $recipe['userPhoto']; ?>" alt="Author">
         <div>
           <small>Recipe by</small>
-          <strong>Lisa Wilson</strong>
+          <strong><?php echo $recipe['firstName'] . " " . $recipe['lastName']; ?></strong>
         </div>
       </div>
 
+      <?php if (!$isCreator && !$isAdmin) { ?>
       <div class="viewRecipe_buttons">
-        <button class="viewRecipe_btn" type="button">
+
+        <?php if ($alreadyFavourite) { ?>
+        <button class="viewRecipe_btn" type="button" disabled>
           <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
-          Save
+          Saved
         </button>
+        <?php } else { ?>
+          <a class="viewRecipe_btn" href="add_favourite.php?id=<?php echo $recipeID; ?>">
+            <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
+            Save
+          </a>
+        <?php } ?>
 
-        <button class="viewRecipe_btn" type="button">
-          <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
-          Like
-        </button>
+        <?php if ($alreadyLiked) { ?>
+          <button class="viewRecipe_btn" type="button" disabled>
+            <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
+            Liked
+          </button>
+        <?php } else { ?>
+          <a class="viewRecipe_btn" href="add_like.php?id=<?php echo $recipeID; ?>">
+            <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
+            Like
+          </a>
+        <?php } ?>
 
-        <button class="viewRecipe_btn" type="button">
-          <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
-          Report
-        </button>
+        <?php if ($alreadyReported) { ?>
+          <button class="viewRecipe_btn" type="button" disabled>
+            <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
+            Reported
+          </button>
+        <?php } else { ?>
+          <a class="viewRecipe_btn" href="add_report.php?id=<?php echo $recipeID; ?>">
+            <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
+            Report
+          </a>
+        <?php } ?>
+
       </div>
+      <?php } ?>
     </section>
 
-    <!-- categories -->
     <div class="viewRecipe_buttons categories">
-      <div class="viewRecipe_btn info">Vegetarian</div>
-      <div class="viewRecipe_btn info">Healthy</div>
-      <div class="viewRecipe_btn info">Lunch</div>
+      <div class="viewRecipe_btn info"><?php echo $recipe['categoryName']; ?></div>
     </div>
 
     <p class="viewRecipe_description">
-      A vibrant and nourishing bowl packed with protein-rich quinoa, fresh vegetables, and a creamy loomi tahini dressing.
-      This recipe is perfect for meal prep and brings together the best flavors of warm spices, bright citrus, and wholesome ingredients in one balanced dish
+      <?php echo $recipe['description']; ?>
     </p>
 
     <section class="viewRecipe_2Cards">
-      <!-- ingredients -->
       <div class="viewRecipe_metaCard ingredients">
         <h2>Ingredients</h2>
         <ul>
-          <li>Quinoa<span>1 cup</span></li>
-          <li>Chickpeas<span>1 cup</span></li>
-          <li>Sweet potato<span> 1 medium, cubed</span></li>
-          <li>Garlic<span>1 clove, minced</span></li>
-          <li>Red onion<span>¼ cup, thinly sliced</span></li>
-          <li>Cherry tomatoes<span>1 cup, halved</span></li>
-          <li>Avocado<span>1 ,sliced</span></li>
-          <li>Arugula<span>1 cup</span></li>
-          <li>Tahini<span>3 tablespoons</span></li>
-          <li>Loomi powder<span>½ teaspoon</span></li>
-          <li>Olive oil<span>1 tablespoon</span></li>
+          <?php while ($ingredient = $resultIngredients->fetch_assoc()) { ?>
+            <li><?php echo $ingredient['ingredientName']; ?><span><?php echo $ingredient['ingredientQuantity']; ?></span></li>
+          <?php } ?>
         </ul>
       </div>
 
-      <!-- instructions -->
       <div class="viewRecipe_metaCard ingredients instructions">
         <h2>Instructions</h2>
         <ol>
-          <li>
-            <span class="stepNum">1</span>
-            <p>Preheat the oven and toss the sweet potatoes with olive oil, cumin, coriander, salt, and pepper.</p>
-          </li>
-          <li>
-            <span class="stepNum">2</span>
-            <p>Roast the sweet potatoes until tender and lightly golden.</p>
-          </li>
-          <li>
-            <span class="stepNum">3</span>
-            <p>Prepare the loomi tahini dressing by whisking tahini, lemon juice, loomi powder, garlic, olive oil, and water until smooth and creamy.</p>
-          </li>
-          <li>
-            <span class="stepNum">4</span>
-            <p>Assemble the bowl by layering quinoa, vegetables, and chickpeas.</p>
-          </li>
-          <li>
-            <span class="stepNum">5</span>
-            <p>Drizzle with the dressing and serve warm or at room temperature.</p>
-          </li>
+          <?php while ($instruction = $resultInstructions->fetch_assoc()) { ?>
+            <li>
+              <span class="stepNum"><?php echo $instruction['stepOrder']; ?></span>
+              <p><?php echo $instruction['step']; ?></p>
+            </li>
+          <?php } ?>
         </ol>
       </div>
     </section>
 
-    <!-- VIDEO -->
+    <?php if (!empty($recipe['videoFilePath'])) { ?>
     <section class="viewRecipe_section">
       <h3>Watch the Recipe</h3>
       <div class="viewRecipe_videoWrap">
-        <iframe
-          src="https://www.youtube.com/embed/m9dI0OcQx68"
-          title="Recipe video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+        <video controls>
+            <source src="videos/<?php echo $recipe['videoFilePath']; ?>" type="video/mp4">        </video>
       </div>
     </section>
+    <?php } ?>
 
-    <!-- COMMENTS -->
     <section class="viewRecipe_section viewRecipe_commentsCard">
       <div class="viewRecipe_commentsHead">
         <h3 id="commentTitle">Comments</h3>
       </div>
 
       <ul class="viewRecipe_commentList">
+        <?php
+        if ($resultComments->num_rows > 0) {
+            while ($comment = $resultComments->fetch_assoc()) {
+                $initial = strtoupper(substr($comment['firstName'], 0, 1));
+        ?>
         <li class="viewRecipe_comment">
           <div class="viewRecipe_commentTop">
-            <div class="viewRecipe_badge">S</div>
+            <div class="viewRecipe_badge"><?php echo $initial; ?></div>
             <div>
-              <b>Sarah Chen</b>
-              <small>Jan 15, 2024</small>
+              <b><?php echo $comment['firstName'] . " " . $comment['lastName']; ?></b>
+              <small><?php echo $comment['commentDate']; ?></small>
             </div>
           </div>
-          <p>Made this for dinner last night and my whole family loved it! The tahini dressing is absolutely divine. Will definitely be making this again.</p>
+          <p><?php echo $comment['userComment']; ?></p>
         </li>
-
-        <li class="viewRecipe_comment">
-          <div class="viewRecipe_commentTop">
-            <div class="viewRecipe_badge">M</div>
-            <div>
-              <b>Michael Torres</b>
-              <small>Jan 14, 2024</small>
-            </div>
-          </div>
-          <p>Perfect recipe for meal prep! I made a double batch and it lasted me the whole week. The flavors actually got better after a day in the fridge.</p>
-        </li>
-
-        <li class="viewRecipe_comment">
-          <div class="viewRecipe_commentTop">
-            <div class="viewRecipe_badge">O</div>
-            <div>
-              <b>Olivia Johnson</b>
-              <small>Jan 12, 2024</small>
-            </div>
-          </div>
-          <p>I added some grilled chicken to make it more filling and it was incredible. This is now my go-to healthy lunch recipe!</p>
-        </li>
+        <?php
+            }
+        } else {
+            echo '<li class="viewRecipe_comment"><p>No comments yet.</p></li>';
+        }
+        ?>
       </ul>
 
-      <form class="viewRecipe_commentForm">
-        <textarea placeholder="Share your thoughts on this recipe..."></textarea>
+      <?php if (!$isAdmin) { ?>
+      <form class="viewRecipe_commentForm" action="add_comment.php" method="post">
+        <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
+        <textarea name="comment" placeholder="Share your thoughts on this recipe..." required></textarea>
         <div class="viewRecipe_row">
-          <button class="viewRecipe_postBtn" type="submit">
-            Post Comment
-          </button>
+          <button class="viewRecipe_postBtn" type="submit">Post Comment</button>
         </div>
       </form>
+      <?php } ?>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-grid">
-      <!-- About -->
       <div class="footer-about">
         <div class="footer-brand">
           <img src="images/palmLogo.png" alt="Palm Glow Logo">
@@ -867,7 +876,6 @@ nav{
         </p>
       </div>
 
-      <!-- Contact -->
       <div class="footer-col">
         <h4>Contact</h4>
         <div class="footer-links">
@@ -876,7 +884,6 @@ nav{
         </div>
       </div>
 
-      <!-- Subscribe -->
       <div class="footer-col">
         <h4>Subscribe</h4>
         <p class="footer-text small">Get new recipes & wellness picks</p>
@@ -896,5 +903,3 @@ nav{
   </footer>
 </body>
 </html>
-
-
