@@ -633,9 +633,9 @@ while ($ins = $insResult->fetch_assoc()) {
       </a>
 
       <nav>
-        <a class="nav-link" href="user2.html">User</a>
-        <a class="nav-link" href="myRecipes.html">My Recipes</a>
-        <a class="nav-link" href="addRecipe.html">Add Recipe</a>
+        <a class="nav-link" href="user.php">User Page</a>
+        <a class="nav-link" href="myRecipes.php">My Recipes</a>
+        <a class="nav-link" href="addRecipe.php">Add Recipe</a>
       </nav>
 
 
