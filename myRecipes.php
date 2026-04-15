@@ -1,4 +1,65 @@
-<?php include 'includes/auth_user.php'; ?>
+<?php
+include 'auth_user.php';
+include 'db_connection.php';
+
+//Get the user id:
+$userID = $_SESSION['userID'];
+
+//Retrive all user rec & count the likes 
+$sql = "
+    SELECT
+        r.id,
+        r.NAME,
+        r.photoFileName,
+        COUNT(l.recipeID) AS likeCount 
+    FROM Recipe r
+    LEFT JOIN Likes l ON r.id = l.recipeID
+    WHERE r.userID = ?
+    GROUP BY r.id
+";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+
+//Ingredients and put it in array:
+$ingredientsByRecipe = [];
+
+$sqlIng = "
+    SELECT recipeID, ingredientName, ingredientQuantity
+    FROM ingredients
+";
+
+$stmtIng = $conn->prepare($sqlIng);
+$stmtIng->execute();
+$ingResult = $stmtIng->get_result();
+
+//loop:
+while ($ing = $ingResult->fetch_assoc()) {
+    $ingredientsByRecipe[$ing['recipeID']][] = $ing;
+}
+
+//Instructions and put it in array:
+$instructionsByRecipe = [];
+
+$sqlIns = "
+    SELECT recipeID, step, stepOrder
+    FROM instructions
+    ORDER BY recipeID, stepOrder
+";
+
+$stmtIns = $conn->prepare($sqlIns);
+$stmtIns->execute();
+$insResult = $stmtIns->get_result();
+
+while ($ins = $insResult->fetch_assoc()) {
+    $instructionsByRecipe[$ins['recipeID']][] = $ins;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -604,149 +665,94 @@
           </thead>
 
           <tbody>
-            <!-- 1) QUINOA (your full style) -->
-            <tr>
-              <td>
-                <a href="view_recipe.html" class="recipe-link">
-                  <img src="images/dish4.jpg" alt="Quinoa Bowl with Loomi Tahini Dressing" class="recipe-thumb">
-                  <span class="recipe-name">Quinoa Bowl with Loomi Tahini Dressing</span>
-                </a>
-              </td>
-              <td>
-                <ul class="table-list">
-                  <li>Quinoa <span style="opacity:.82">— 1 cup</span></li>
-                  <li>Chickpeas <span style="opacity:.82">— 1 cup</span></li>
-                  <li>Sweet potato <span style="opacity:.82">— 1 medium, cubed</span></li>
-                  <li>Garlic <span style="opacity:.82">— 1 clove, minced</span></li>
-                  <li>Red onion <span style="opacity:.82">— ¼ cup, thinly sliced</span></li>
-                  <li>Cherry tomatoes <span style="opacity:.82">— 1 cup, halved</span></li>
-                  <li>Avocado <span style="opacity:.82">— 1, sliced</span></li>
-                  <li>Arugula <span style="opacity:.82">— 1 cup</span></li>
-                  <li>Tahini <span style="opacity:.82">— 3 tablespoons</span></li>
-                  <li>Loomi powder <span style="opacity:.82">— ½ teaspoon</span></li>
-                  <li>Olive oil <span style="opacity:.82">— 1 tablespoon</span></li>
-                </ul>
-              </td>
-              <td>
-                <ol class="table-list">
-                  <li>Preheat the oven and toss the sweet potatoes with olive oil, cumin, coriander, salt, and pepper.
-                  </li>
-                  <li>Roast the sweet potatoes until tender and lightly golden.</li>
-                  <li>Whisk tahini, lemon juice, loomi powder, garlic, olive oil, and water until smooth and creamy.
-                  </li>
-                  <li>Assemble the bowl by layering quinoa, vegetables, and chickpeas.</li>
-                  <li>Drizzle with the dressing and serve warm or at room temperature.</li>
-                </ol>
-              </td>
-              <td><a class="link" href="https://youtu.be/m9dI0OcQx68">Watch</a></td>
-              <td class="likes">25</td>
-              <td><a href="editRecipe.html" class="pill view">Edit</a></td>
-              <td><button type="button" class="pill delete btn-delete"
-                  onclick="location.href='myRecipes.html'">Delete</button></td>
-            </tr>
+            <!--//Loop to fill all the table -->
+            <?php if ($result->num_rows > 0): ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
+<tr>
+  <td>
+    <a href="view_recipe.php?id=<?= $row['id'] ?>" class="recipe-link">
+     <img src="images/<?= $row['photoFileName'] ?>" class="recipe-thumb" alt="Recipe image">
+     <span class="recipe-name"> <?= $row['NAME'] ?></span>
+    </a>
+  </td>
 
-            <!-- 2) MATCHA ROSE LATTE -->
-            <tr>
-              <td>
-                <a href="viewRecipe_matcha.html" class="recipe-link">
-                  <img src="images/glowSip(4).png" alt="Matcha Rose Latte" class="recipe-thumb">
-                  <span class="recipe-name">Matcha Rose Latte</span>
-                </a>
-              </td>
-              <td>
-                <ul class="table-list">
-                  <li>Matcha powder <span style="opacity:.82">— 1½ tsp</span></li>
-                  <li>Warm water <span style="opacity:.82">— 60 ml</span></li>
-                  <li>Milk (or oat milk) <span style="opacity:.82">— 1 cup</span></li>
-                  <li>Rose water <span style="opacity:.82">— ½ tsp</span></li>
-                  <li>Honey <span style="opacity:.82">— 1 tsp</span></li>
-                  <li>Pistachio crumbs <span style="opacity:.82">— 1 tbsp</span></li>
-                </ul>
-              </td>
-              <td>
-                <ol class="table-list">
-                  <li>Sift matcha into a cup and add warm water.</li>
-                  <li>Whisk until silky and foam forms.</li>
-                  <li>Warm the milk and froth it until airy.</li>
-                  <li>Stir rose water and honey into the milk.</li>
-                  <li>Pour milk over matcha, then top with pistachio crumbs.</li>
-                </ol>
-              </td>
-              <td><span class="no-video">No video</span></td>
-              <td class="likes">10</td>
-              <td><a href="editRecipe.html" class="pill view">Edit</a></td>
-              <td><button type="button" class="pill delete btn-delete"
-                  onclick="location.href='myRecipes.html'">Delete</button></td>
-            </tr>
+  <td>
+    <ul class="table-list">
+        <?php if (isset($ingredientsByRecipe[$row['id']])): ?>
+            
+            <?php foreach ($ingredientsByRecipe[$row['id']] as $ing): ?>
 
-            <!-- 3) DATE & ALMOND YOGURT BOWL -->
-            <tr>
-              <td>
-                <a href="view_recipe.html" class="recipe-link">
-                  <img src="images/palmTreat(1).png" alt="Date & Almond Yogurt Bowl" class="recipe-thumb">
-                  <span class="recipe-name">Date & Almond Yogurt Bowl</span>
-                </a>
-              </td>
-              <td>
-                <ul class="table-list">
-                  <li>Greek yogurt <span style="opacity:.82">— 1 cup</span></li>
-                  <li>Medjool dates <span style="opacity:.82">— 3, chopped</span></li>
-                  <li>Almonds <span style="opacity:.82">— 2 tbsp</span></li>
-                  <li>Chia seeds <span style="opacity:.82">— 1 tsp</span></li>
-                  <li>Vanilla <span style="opacity:.82">— ½ tsp</span></li>
-                  <li>Chai cinnamon <span style="opacity:.82">— pinch</span></li>
-                </ul>
-              </td>
-              <td>
-                <ol class="table-list">
-                  <li>Mix yogurt with vanilla and a pinch of cinnamon.</li>
-                  <li>Add chopped dates and stir gently.</li>
-                  <li>Top with almonds and chia seeds.</li>
-                  <li>Let it sit 5 minutes for texture.</li>
-                  <li>Serve chilled and glossy.</li>
-                </ol>
-              </td>
-              <td><a class="link" href="https://youtu.be/m9dI0OcQx68">Watch</a></td>
-              <td class="likes">18</td>
-              <td><a href="editRecipe.html" class="pill view">Edit</a></td>
-              <td><button type="button" class="pill delete btn-delete"
-                  onclick="location.href='myRecipes.html'">Delete</button></td>
-            </tr>
+                <li>
+                    <?= $ing['ingredientName'] ?>
+                    <span style="opacity:.82"> — <?= $ing['ingredientQuantity'] ?></span>
+                </li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>
+                <span style="opacity:.82">No ingredients</span>
+            </li>
+        <?php endif; ?>
+    </ul>
+</td>
+<td>
+    <ol class="table-list">
 
-            <!-- 4) SALMON QAHWA SPICE RUB -->
-            <tr>
-              <td>
-                <a href="view_recipe.html" class="recipe-link">
-                  <img src="images/glowPlate(1).png" alt="Salmon with Qahwa Spice Rub" class="recipe-thumb">
-                  <span class="recipe-name">Salmon with Qahwa Spice Rub</span>
-                </a>
-              </td>
-              <td>
-                <ul class="table-list">
-                  <li>Salmon fillet <span style="opacity:.82">— 2 pieces</span></li>
-                  <li>Olive oil <span style="opacity:.82">— 1 tbsp</span></li>
-                  <li>Qahwa spice mix <span style="opacity:.82">— 1 tsp</span></li>
-                  <li>Lemon zest <span style="opacity:.82">— ½ tsp</span></li>
-                  <li>Sea salt <span style="opacity:.82">— to taste</span></li>
-                  <li>Fresh herbs <span style="opacity:.82">— handful</span></li>
-                </ul>
-              </td>
-              <td>
-                <ol class="table-list">
-                  <li>Pat salmon dry and brush with olive oil.</li>
-                  <li>Rub with qahwa spices, salt, and lemon zest.</li>
-                  <li>Grill 3–4 minutes per side until flaky.</li>
-                  <li>Rest for 2 minutes to keep it juicy.</li>
-                  <li>Finish with herbs and a squeeze of lemon.</li>
-                </ol>
-              </td>
-              <td><span class="no-video">No video</span></td>
-              <td class="likes">32</td>
-              <td><a href="editRecipe.html" class="pill view">Edit</a></td>
-              <td><button type="button" class="pill delete btn-delete"
-                  onclick="location.href='myRecipes.html'">Delete</button></td>
-            </tr>
+        <?php if (isset($instructionsByRecipe[$row['id']])): ?>
 
+            <?php foreach ($instructionsByRecipe[$row['id']] as $step): ?>
+
+                <li>
+                    <?= $step['step'] ?>
+                </li>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <li>
+                <span style="opacity:.82">No instructions</span>
+            </li>
+
+        <?php endif; ?>
+
+    </ol>
+</td>
+    <td>
+    <?php if (!empty($row['videoFilePath'])): ?>
+
+        <a 
+            href="videos/<?= $row['videoFilePath'] ?>" 
+            class="link" 
+            target="_blank"
+        >
+            Watch
+        </a>
+
+    <?php else: ?>
+
+        <span class="no-video">No video</span>
+
+    <?php endif; ?>
+  </td>
+
+  <td class="likes">
+    <?= $row['likeCount'] ?>
+</td>
+
+  <td>
+    <a href="editRecipe.php" class="pill view">Edit</a>
+  </td>
+
+  <td>
+    <button type="button" class="pill delete btn-delete">
+      Delete
+    </button>
+  </td>
+</tr>
+
+<?php endwhile; ?>
+<?php endif; ?>
+          
           </tbody>
         </table>
       </div>
