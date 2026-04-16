@@ -647,7 +647,7 @@ while ($ins = $insResult->fetch_assoc()) {
     <div class="container">
       <div class="topbar">
         <h2 class="title">My Recipes</h2>
-        <a href="addRecipe.html" class="btn-add">Add New Recipe</a>
+        <a href="addRecipe.php" class="btn-add">Add New Recipe</a>
       </div>
 
       <div class="card">
@@ -740,7 +740,7 @@ while ($ins = $insResult->fetch_assoc()) {
 </td>
 
   <td>
-    <a href="editRecipe.php" class="pill view">Edit</a>
+   <a href="editRecipe.php?id=<?= $row['id'] ?>" class="pill view">Edit</a>
   </td>
 
   <td>
