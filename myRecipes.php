@@ -11,6 +11,7 @@ $sql = "
         r.id,
         r.NAME,
         r.photoFileName,
+        r.videoFilePath,
         COUNT(l.recipeID) AS likeCount 
     FROM Recipe r
     LEFT JOIN Likes l ON r.id = l.recipeID
@@ -744,9 +745,10 @@ while ($ins = $insResult->fetch_assoc()) {
   </td>
 
   <td>
-    <button type="button" class="pill delete btn-delete">
-      Delete
-    </button>
+    <a 
+    href="delete_recipe_process.php?id=<?= $row['id'] ?>" 
+    class="pill delete">
+
   </td>
 </tr>
 

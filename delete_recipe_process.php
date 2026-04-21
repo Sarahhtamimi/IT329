@@ -83,5 +83,5 @@ $stmtDelete->execute();
 
 
 // Redirect back to My Recipes page
-header("Location: my_recipes.php");
+header("Location: myRecipes.php");
 exit();
