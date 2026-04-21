@@ -1,5 +1,5 @@
 <?php
-include 'auth_user.php';
+include 'auth_any.php';
 include 'db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {

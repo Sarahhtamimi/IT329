@@ -848,7 +848,7 @@ if (!$isCreator && !$isAdmin) {
         ?>
       </ul>
 
-      <?php if (!$isAdmin) { ?>
+      
       <form class="viewRecipe_commentForm" action="add_comment.php" method="post">
         <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
         <textarea name="comment" placeholder="Share your thoughts on this recipe..." required></textarea>
@@ -856,7 +856,7 @@ if (!$isCreator && !$isAdmin) {
           <button class="viewRecipe_postBtn" type="submit">Post Comment</button>
         </div>
       </form>
-      <?php } ?>
+      
     </section>
   </main>
 
