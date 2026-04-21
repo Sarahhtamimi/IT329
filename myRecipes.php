@@ -653,6 +653,7 @@ while ($ins = $insResult->fetch_assoc()) {
       </div>
 
       <div class="card">
+          <?php if ($result->num_rows > 0): ?>
         <table>
           <thead>
             <tr>
@@ -753,10 +754,16 @@ if (!empty($row['videoFilePath']) && file_exists($videoPath)):
 
 <?php endwhile; ?>
 <?php endif; ?>
-          
           </tbody>
         </table>
       </div>
+        <?php else: ?>
+        <div class="card" style="padding:40px; text-align:center;">
+  <p style="font-weight:700;">
+    You have not added any recipes yet 🍽️
+  </p>
+</div>
+        <?php endif; ?>
     </div>
   </main>
 

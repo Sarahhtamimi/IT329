@@ -7,20 +7,21 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Recipe ID is missing.");
 }
 
-$recipeID = $_GET['id'];
+$recipeID = (int) $_GET['id'];
 $userID   = $_SESSION['userID'];
 
-
 // Get recipe to check ownership and get file names
-$sqlRecipe = "SELECT photoFileName, videoFilePath, userID 
-              FROM Recipe 
-              WHERE id = ?";
+$sqlRecipe = "
+    SELECT photoFileName, videoFilePath, userID
+    FROM Recipe
+    WHERE id = ?
+";
 $stmtRecipe = $conn->prepare($sqlRecipe);
 $stmtRecipe->bind_param("i", $recipeID);
 $stmtRecipe->execute();
 $resultRecipe = $stmtRecipe->get_result();
 
-if ($resultRecipe->num_rows == 0) {
+if ($resultRecipe->num_rows === 0) {
     die("Recipe not found.");
 }
 
@@ -32,30 +33,30 @@ if ($recipe['userID'] != $userID) {
 }
 
 
-// Delete related data first
-$conn->prepare("DELETE FROM Ingredients WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
 
-$conn->prepare("DELETE FROM Instructions WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
+$stmt = $conn->prepare("DELETE FROM Ingredients WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
 
-$conn->prepare("DELETE FROM comment WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
+$stmt = $conn->prepare("DELETE FROM Instructions WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
 
-$conn->prepare("DELETE FROM Likes WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
+$stmt = $conn->prepare("DELETE FROM COMMENT WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
 
-$conn->prepare("DELETE FROM Favourites WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
+$stmt = $conn->prepare("DELETE FROM Likes WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
 
-$conn->prepare("DELETE FROM Report WHERE recipeID = ?")
-     ->bind_param("i", $recipeID)
-     ->execute();
+$stmt = $conn->prepare("DELETE FROM Favourites WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
+
+$stmt = $conn->prepare("DELETE FROM Report WHERE recipeID = ?");
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
 
 
 // Delete image file
@@ -74,13 +75,10 @@ if (!empty($recipe['videoFilePath'])) {
     }
 }
 
-
-// Delete the recipe itself
-$sqlDelete = "DELETE FROM Recipe WHERE id = ?";
-$stmtDelete = $conn->prepare($sqlDelete);
+//System
+$stmtDelete = $conn->prepare("DELETE FROM Recipe WHERE id = ?");
 $stmtDelete->bind_param("i", $recipeID);
 $stmtDelete->execute();
-
 
 // Redirect back to My Recipes page
 header("Location: myRecipes.php");
