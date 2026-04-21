@@ -1,11 +1,12 @@
 <?php
+// Feature 1: User Authentication
 include 'auth_user.php';
 include 'db_connection.php';
 
 //Get the user id:
 $userID = $_SESSION['userID'];
 
-//Retrive all user rec & count the likes 
+// Feature 2: Retrieve User Recipes and Likes Count
 $sql = "
     SELECT
         r.id,
@@ -719,35 +720,33 @@ while ($ins = $insResult->fetch_assoc()) {
     </ol>
 </td>
     <td>
-    <?php if (!empty($row['videoFilePath'])): ?>
+<?php
+$videoPath = "videos/" . $row['videoFilePath'];
 
-        <a 
-            href="videos/<?= $row['videoFilePath'] ?>" 
-            class="link" 
-            target="_blank"
-        >
-            Watch
-        </a>
-
-    <?php else: ?>
-
-        <span class="no-video">No video</span>
-
-    <?php endif; ?>
+if (!empty($row['videoFilePath']) && file_exists($videoPath)):
+?>
+    <a 
+        href="<?= $videoPath ?>" 
+        class="link" 
+        target="_blank"
+    >
+       <span class="no-video">Watch video</span>
+    </a>
+<?php else: ?>
+    <span class="no-video">No video</span>
+<?php endif; ?>
+</td>
+<td class="likes">
+      <?= $row['likeCount'] ?>
   </td>
 
-  <td class="likes">
-    <?= $row['likeCount'] ?>
-</td>
 
   <td>
    <a href="editRecipe.php?id=<?= $row['id'] ?>" class="pill view">Edit</a>
   </td>
 
   <td>
-    <a 
-    href="delete_recipe_process.php?id=<?= $row['id'] ?>" 
-    class="pill delete">
+      <a href="delete_recipe_process.php?id=<?= $row['id'] ?>" class="pill delete">Delete</a>
 
   </td>
 </tr>
