@@ -1,5 +1,7 @@
 <?php
 include 'auth_any.php';
+
+
 include 'db_connection.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -73,6 +75,7 @@ if (!$isCreator && !$isAdmin) {
     $stmtLike->bind_param("ii", $userID, $recipeID);
     $stmtLike->execute();
     $resultLike = $stmtLike->get_result();
+
     if ($resultLike->num_rows > 0) {
         $alreadyLiked = true;
     }
@@ -82,6 +85,7 @@ if (!$isCreator && !$isAdmin) {
     $stmtFavourite->bind_param("ii", $userID, $recipeID);
     $stmtFavourite->execute();
     $resultFavourite = $stmtFavourite->get_result();
+
     if ($resultFavourite->num_rows > 0) {
         $alreadyFavourite = true;
     }
@@ -91,6 +95,7 @@ if (!$isCreator && !$isAdmin) {
     $stmtReport->bind_param("ii", $userID, $recipeID);
     $stmtReport->execute();
     $resultReport = $stmtReport->get_result();
+
     if ($resultReport->num_rows > 0) {
         $alreadyReported = true;
     }
@@ -106,6 +111,9 @@ if (!$isCreator && !$isAdmin) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- jQuery for Phase 3 AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <style>
     :root{
@@ -323,6 +331,7 @@ if (!$isCreator && !$isAdmin) {
       color:#2C2C2C;
       cursor:pointer;
       transition: .2s;
+      font-size: 14px;
     }
 
     .viewRecipe_btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow-soft); }
@@ -333,9 +342,11 @@ if (!$isCreator && !$isAdmin) {
       color: var(--matcha);
       border:1px solid rgba(128,150,113,.22);
     }
+
     .info:hover{ transform:none; box-shadow:none; }
 
     .viewRecipe_icon{ width:17px; text-align:center; opacity:.75; }
+    .viewRecipe_icon img{ width:17px; }
     .flag{ width:14.5px; }
 
     .categories{
@@ -383,6 +394,7 @@ if (!$isCreator && !$isAdmin) {
     }
 
     .ingredients ul{ padding-left: 20px; margin: 0; }
+
     .ingredients ul li{
       margin-bottom: 12px;
       font-size: 15px;
@@ -390,6 +402,7 @@ if (!$isCreator && !$isAdmin) {
       list-style-type: disc;
       color: #2C2C2C;
     }
+
     .ingredients ul li::marker{ color: var(--matcha); }
 
     .ingredients span{
@@ -400,6 +413,7 @@ if (!$isCreator && !$isAdmin) {
     }
 
     .instructions{ font-weight: 600; }
+
     .instructions p{
       margin: 0;
       font-weight: 400;
@@ -409,6 +423,7 @@ if (!$isCreator && !$isAdmin) {
     }
 
     .instructions ol{ list-style: none; padding-left: 0; margin: 0; }
+
     .instructions ol li{
       display: flex;
       gap: 18px;
@@ -469,10 +484,12 @@ if (!$isCreator && !$isAdmin) {
     }
 
     .viewRecipe_commentList{ margin: 0; padding: 0; list-style: none; }
+
     .viewRecipe_comment{
       padding: 22px 26px;
       border-bottom: 1px solid rgba(114,92,58,.10);
     }
+
     .viewRecipe_comment:last-child{ border-bottom: 0; }
 
     .viewRecipe_commentTop{
@@ -497,6 +514,7 @@ if (!$isCreator && !$isAdmin) {
     }
 
     .viewRecipe_commentTop b{ font-weight: 600; font-size: 15px; }
+
     .viewRecipe_commentTop small{ opacity: .82; font-size: 12px; margin-left: 8px; }
 
     .viewRecipe_comment p{
@@ -520,6 +538,7 @@ if (!$isCreator && !$isAdmin) {
       color: #2C2C2C;
       outline: none;
     }
+
     .viewRecipe_commentForm textarea:focus{ border-color: rgba(128,150,113,.55); }
 
     .viewRecipe_row{ display:flex; justify-content: flex-end; }
@@ -536,6 +555,7 @@ if (!$isCreator && !$isAdmin) {
       cursor: pointer;
       transition: .2s;
     }
+
     .viewRecipe_postBtn:hover{ opacity: .93; transform: translateY(-1px); box-shadow: var(--shadow-soft); }
 
     #commentTitle{
@@ -664,6 +684,7 @@ if (!$isCreator && !$isAdmin) {
       font-size: 12.5px;
       opacity: .84;
     }
+
     .viewRecipe_btn[disabled]{
       opacity: .65;
       cursor: not-allowed;
@@ -677,6 +698,7 @@ if (!$isCreator && !$isAdmin) {
       transform: none;
       box-shadow: none;
     }
+
     @media (max-width: 980px){
       nav{ display:none; }
       .footer-grid{ grid-template-columns: 1fr; }
@@ -739,15 +761,19 @@ if (!$isCreator && !$isAdmin) {
       <div class="viewRecipe_buttons">
 
         <?php if ($alreadyFavourite) { ?>
-        <button class="viewRecipe_btn" type="button" disabled>
-          <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
-          Saved
-        </button>
+          <button class="viewRecipe_btn" type="button" disabled>
+            <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
+            Saved
+          </button>
         <?php } else { ?>
-          <a class="viewRecipe_btn" href="add_favourite.php?id=<?php echo $recipeID; ?>">
+          <button class="viewRecipe_btn ajaxBtn"
+                  type="button"
+                  data-url="add_favourite.php"
+                  data-id="<?php echo $recipeID; ?>"
+                  data-done="Saved">
             <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
             Save
-          </a>
+          </button>
         <?php } ?>
 
         <?php if ($alreadyLiked) { ?>
@@ -756,10 +782,14 @@ if (!$isCreator && !$isAdmin) {
             Liked
           </button>
         <?php } else { ?>
-          <a class="viewRecipe_btn" href="add_like.php?id=<?php echo $recipeID; ?>">
+          <button class="viewRecipe_btn ajaxBtn"
+                  type="button"
+                  data-url="add_like.php"
+                  data-id="<?php echo $recipeID; ?>"
+                  data-done="Liked">
             <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
             Like
-          </a>
+          </button>
         <?php } ?>
 
         <?php if ($alreadyReported) { ?>
@@ -768,10 +798,14 @@ if (!$isCreator && !$isAdmin) {
             Reported
           </button>
         <?php } else { ?>
-          <a class="viewRecipe_btn" href="add_report.php?id=<?php echo $recipeID; ?>">
+          <button class="viewRecipe_btn ajaxBtn"
+                  type="button"
+                  data-url="add_report.php"
+                  data-id="<?php echo $recipeID; ?>"
+                  data-done="Reported">
             <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
             Report
-          </a>
+          </button>
         <?php } ?>
 
       </div>
@@ -814,7 +848,8 @@ if (!$isCreator && !$isAdmin) {
       <h3>Watch the Recipe</h3>
       <div class="viewRecipe_videoWrap">
         <video controls>
-            <source src="videos/<?php echo $recipe['videoFilePath']; ?>" type="video/mp4">        </video>
+          <source src="videos/<?php echo $recipe['videoFilePath']; ?>" type="video/mp4">
+        </video>
       </div>
     </section>
     <?php } ?>
@@ -848,7 +883,6 @@ if (!$isCreator && !$isAdmin) {
         ?>
       </ul>
 
-      
       <form class="viewRecipe_commentForm" action="add_comment.php" method="post">
         <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
         <textarea name="comment" placeholder="Share your thoughts on this recipe..." required></textarea>
@@ -856,7 +890,6 @@ if (!$isCreator && !$isAdmin) {
           <button class="viewRecipe_postBtn" type="submit">Post Comment</button>
         </div>
       </form>
-      
     </section>
   </main>
 
@@ -901,5 +934,30 @@ if (!$isCreator && !$isAdmin) {
       <span>© 2026 Palm Glow</span>
     </div>
   </footer>
+
+  <script>
+  $(document).ready(function(){
+
+      $(".ajaxBtn").click(function(){
+
+          var button = $(this);
+          var page = button.data("url");
+          var recipeID = button.data("id");
+          var doneText = button.data("done");
+          var icon = button.find("span")[0].outerHTML;
+
+          $.get(page, { id: recipeID }, function(response){
+
+              if ($.trim(response) == "true") {
+                  button.prop("disabled", true);
+                  button.html(icon + " " + doneText);
+              }
+
+          }, "text");
+
+      });
+
+  });
+  </script>
 </body>
 </html>

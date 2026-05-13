@@ -2,8 +2,11 @@
 include 'auth_user.php';
 include 'db_connection.php';
 
+header("Content-Type: text/plain");
+
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    die("Recipe ID is missing.");
+    echo "false";
+    exit();
 }
 
 $recipeID = $_GET['id'];
@@ -16,13 +19,14 @@ $stmtRecipe->execute();
 $resultRecipe = $stmtRecipe->get_result();
 
 if ($resultRecipe->num_rows == 0) {
-    die("Recipe not found.");
+    echo "false";
+    exit();
 }
 
 $recipe = $resultRecipe->fetch_assoc();
 
 if ($recipe['userID'] == $userID) {
-    header("Location: view_recipe.php?id=" . $recipeID);
+    echo "false";
     exit();
 }
 
@@ -32,12 +36,20 @@ $stmtCheck->bind_param("ii", $userID, $recipeID);
 $stmtCheck->execute();
 $resultCheck = $stmtCheck->get_result();
 
-if ($resultCheck->num_rows == 0) {
-    $sqlInsert = "INSERT INTO Likes (userID, recipeID) VALUES (?, ?)";
-    $stmtInsert = $conn->prepare($sqlInsert);
-    $stmtInsert->bind_param("ii", $userID, $recipeID);
-    $stmtInsert->execute();
+if ($resultCheck->num_rows > 0) {
+    echo "true";
+    exit();
 }
 
-header("Location: view_recipe.php?id=" . $recipeID);
+$sqlInsert = "INSERT INTO Likes (userID, recipeID) VALUES (?, ?)";
+$stmtInsert = $conn->prepare($sqlInsert);
+$stmtInsert->bind_param("ii", $userID, $recipeID);
+
+if ($stmtInsert->execute()) {
+    echo "true";
+} else {
+    echo "false";
+}
+
 exit();
+?>
