@@ -1088,13 +1088,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category'])) {
   var tr = document.createElement("tr");
 
   // Favourite table (3 columns only)
-  if (isFav){
+if (isFav){
   tr.innerHTML =
-  //REQ6 the following line is recipre name generated link, r.link is created by php
     "<td><a href='" + r.link + "' style='color:#725C3A; font-weight:700; text-decoration:underline;'>" + r.name + "</a></td>" +
     "<td><img class='table-photo' src='" + r.photo + "' alt='recipe photo'></td>" +
-    //and this line is the remove generated link to a php page
-    "<td><a class='remove-table-btn' href='remove_favourite.php?recipeID=" + r.id + "'>Remove</a></td>";
+    "<td><button class='remove-table-btn' data-id='" + r.id + "'>Remove</button></td>";
 
   return tr;
 }
@@ -1129,7 +1127,50 @@ function renderFavourites(){
   }
 }
 
+// AJAX remove favourite
+if (favBody){
+  favBody.addEventListener("click", function(e){
+    var btn = e.target.closest(".remove-table-btn");
+    if (!btn) return;
 
+    var recipeID = btn.getAttribute("data-id");
+    var row = btn.closest("tr");
+
+    // Build AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "remove_favourite.php?recipeID=" + recipeID, true);
+
+    xhr.onreadystatechange = function(){
+      if (xhr.readyState === 4 && xhr.status === 200){
+        // Trim in case PHP outputs whitespace/newlines
+        var response = xhr.responseText.trim();
+
+        // Check the returned value from the PHP page
+        if (response === "true"){
+          // Remove the corresponding row in the HTML table
+          row.remove();
+
+          // If table is now empty, show the empty-state message
+          if (favBody.children.length === 0){
+            var favSection = favBody.closest("section");
+            var table = favBody.closest("table");
+            table.remove();
+            var msg = document.createElement("p");
+            msg.style.marginTop = "14px";
+            msg.style.fontWeight = "600";
+            msg.style.color = "#725C3A";
+            msg.textContent = "You do not have any favourite recipes yet.";
+            favSection.appendChild(msg);
+          }
+        } else {
+          alert("Could not remove the recipe. Please try again.");
+        }
+      }
+    };
+
+    xhr.send();
+  });
+}
 
   // initial render 
 renderAll();
