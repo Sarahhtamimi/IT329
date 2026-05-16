@@ -1,7 +1,5 @@
 <?php
 include 'auth_any.php';
-
-
 include 'db_connection.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -112,7 +110,6 @@ if (!$isCreator && !$isAdmin) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- jQuery for Phase 3 AJAX -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <style>
@@ -177,7 +174,63 @@ if (!$isCreator && !$isAdmin) {
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       gap: 16px;
-      padding: 14px 0;
+      padding: 14px 0;<?php
+include 'auth_user.php';
+include 'db_connection.php';
+
+header("Content-Type: text/plain");
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    print "false";
+    exit();
+}
+
+$recipeID = $_GET['id'];
+$userID = $_SESSION['userID'];
+
+/* Check that recipe exists */
+$sqlRecipe = "SELECT * FROM Recipe WHERE id = ?";
+$stmtRecipe = $conn->prepare($sqlRecipe);
+$stmtRecipe->bind_param("i", $recipeID);
+$stmtRecipe->execute();
+$resultRecipe = $stmtRecipe->get_result();
+
+if ($resultRecipe->num_rows == 0) {
+    print "false";
+    exit();
+}
+
+$recipe = $resultRecipe->fetch_assoc();
+
+/* Recipe creator cannot report own recipe */
+if ($recipe['userID'] == $userID) {
+    print "false";
+    exit();
+}
+
+/* Check if already reported */
+$sqlCheck = "SELECT * FROM Report WHERE userID = ? AND recipeID = ?";
+$stmtCheck = $conn->prepare($sqlCheck);
+$stmtCheck->bind_param("ii", $userID, $recipeID);
+$stmtCheck->execute();
+$resultCheck = $stmtCheck->get_result();
+
+if ($resultCheck->num_rows > 0) {
+    print "true";
+    exit();
+}
+
+/* Insert report */
+$sqlInsert = "INSERT INTO Report (userID, recipeID) VALUES (?, ?)";
+$stmtInsert = $conn->prepare($sqlInsert);
+$stmtInsert->bind_param("ii", $userID, $recipeID);
+
+if ($stmtInsert->execute()) {
+    print "true";
+} else {
+    print "false";
+}
+?>
     }
 
     .brand{
@@ -766,11 +819,7 @@ if (!$isCreator && !$isAdmin) {
             Saved
           </button>
         <?php } else { ?>
-          <button class="viewRecipe_btn ajaxBtn"
-                  type="button"
-                  data-url="add_favourite.php"
-                  data-id="<?php echo $recipeID; ?>"
-                  data-done="Saved">
+          <button class="viewRecipe_btn" id="saveBtn" type="button">
             <span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span>
             Save
           </button>
@@ -782,11 +831,7 @@ if (!$isCreator && !$isAdmin) {
             Liked
           </button>
         <?php } else { ?>
-          <button class="viewRecipe_btn ajaxBtn"
-                  type="button"
-                  data-url="add_like.php"
-                  data-id="<?php echo $recipeID; ?>"
-                  data-done="Liked">
+          <button class="viewRecipe_btn" id="likeBtn" type="button">
             <span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span>
             Like
           </button>
@@ -798,11 +843,7 @@ if (!$isCreator && !$isAdmin) {
             Reported
           </button>
         <?php } else { ?>
-          <button class="viewRecipe_btn ajaxBtn"
-                  type="button"
-                  data-url="add_report.php"
-                  data-id="<?php echo $recipeID; ?>"
-                  data-done="Reported">
+          <button class="viewRecipe_btn" id="reportBtn" type="button">
             <span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span>
             Report
           </button>
@@ -938,22 +979,53 @@ if (!$isCreator && !$isAdmin) {
   <script>
   $(document).ready(function(){
 
-      $(".ajaxBtn").click(function(){
+      $("#saveBtn").click(function(){
 
-          var button = $(this);
-          var page = button.data("url");
-          var recipeID = button.data("id");
-          var doneText = button.data("done");
-          var icon = button.find("span")[0].outerHTML;
-
-          $.get(page, { id: recipeID }, function(response){
+          $.get("add_favourite.php",
+          { id: <?php echo $recipeID; ?> },
+          function(response){
 
               if ($.trim(response) == "true") {
-                  button.prop("disabled", true);
-                  button.html(icon + " " + doneText);
+                  $("#saveBtn").prop("disabled", true);
+                  $("#saveBtn").html('<span class="viewRecipe_icon"><img src="images/ribbon.png" alt="bookmark"></span> Saved');
               }
 
-          }, "text");
+          },
+          "text");
+
+      });
+
+
+      $("#likeBtn").click(function(){
+
+          $.get("add_like.php",
+          { id: <?php echo $recipeID; ?> },
+          function(response){
+
+              if ($.trim(response) == "true") {
+                  $("#likeBtn").prop("disabled", true);
+                  $("#likeBtn").html('<span class="viewRecipe_icon"><img src="images/heart2.png" alt="like"></span> Liked');
+              }
+
+          },
+          "text");
+
+      });
+
+
+      $("#reportBtn").click(function(){
+
+          $.get("add_report.php",
+          { id: <?php echo $recipeID; ?> },
+          function(response){
+
+              if ($.trim(response) == "true") {
+                  $("#reportBtn").prop("disabled", true);
+                  $("#reportBtn").html('<span class="viewRecipe_icon flag"><img src="images/report.png" alt="report"></span> Reported');
+              }
+
+          },
+          "text");
 
       });
 
