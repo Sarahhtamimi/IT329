@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'includes/db_connection.php';
+include 'db_connection.php';
 
 $firstName = trim($_POST['firstName']);
 $lastName = trim($_POST['lastName']);
