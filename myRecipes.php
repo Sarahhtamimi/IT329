@@ -747,15 +747,57 @@ if (!empty($row['videoFilePath']) && file_exists($videoPath)):
   </td>
 
   <td>
-      <a href="delete_recipe_process.php?id=<?= $row['id'] ?>" class="pill delete">Delete</a>
+      
+<button class="pill delete delete-btn" data-id="<?= $row['id'] ?>">
+        Delete
+    </button>
 
-  </td>
 </tr>
 
 <?php endwhile; ?>
 <?php endif; ?>
           </tbody>
         </table>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    $(".delete-btn").click(function () {
+
+        const button = $(this);
+        const recipeID = button.data("id");
+
+        if (!confirm("Delete this recipe?")) return;
+
+        $.ajax({
+            url: "delete_recipe_process.php",
+            method: "POST",
+            data: { id: recipeID },
+
+            success: function (response) {
+
+                if (response.trim() === "true") {
+
+                    button.closest("tr").fadeOut(300, function () {
+                        $(this).remove();
+                    });
+
+                } else {
+                    alert("Delete failed ❌");
+                }
+
+            },
+
+            error: function (xhr) {
+                alert("Server Error:\n" + xhr.responseText);
+            }
+        });
+
+    });
+
+});
+</script>
       </div>
         <?php else: ?>
         <div class="card" style="padding:40px; text-align:center;">
@@ -810,16 +852,6 @@ if (!empty($row['videoFilePath']) && file_exists($videoPath)):
     </div>
   </footer>
 
-  <script>
-    document.querySelectorAll(".btn-delete").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const row = btn.closest("tr");
-        if (confirm("Delete this recipe?")) {
-          row.remove();
-        }
-      });
-    });
-  </script>
   <script>
     const form = document.getElementById("subscribeForm");
     const note = document.getElementById("subNote");

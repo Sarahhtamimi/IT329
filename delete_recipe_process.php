@@ -1,65 +1,53 @@
 <?php
-include 'auth_user.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+// return false rather then redirct
+if (!isset($_SESSION['userID']) || $_SESSION['userType'] !== 'user') {
+    echo "false";
+    exit();
+}
+
 include 'db_connection.php';
 
-// Check if recipe ID exists
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    die("Recipe ID is missing.");
+//ID
+if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
+    echo "false";
+    exit();
 }
 
-$recipeID = (int) $_GET['id'];
+$recipeID = (int) $_POST['id'];
 $userID   = $_SESSION['userID'];
 
-// Get recipe to check ownership and get file names
-$sqlRecipe = "
-    SELECT photoFileName, videoFilePath, userID
-    FROM Recipe
-    WHERE id = ?
-";
-$stmtRecipe = $conn->prepare($sqlRecipe);
-$stmtRecipe->bind_param("i", $recipeID);
-$stmtRecipe->execute();
-$resultRecipe = $stmtRecipe->get_result();
+// retrive recipe
+$sql = "SELECT photoFileName, videoFilePath, userID FROM Recipe WHERE id = ?";
+$stmt = $conn->prepare($sql);
 
-if ($resultRecipe->num_rows === 0) {
-    die("Recipe not found.");
+if (!$stmt) {
+    echo "false";
+    exit();
 }
 
-$recipe = $resultRecipe->fetch_assoc();
+$stmt->bind_param("i", $recipeID);
+$stmt->execute();
+$result = $stmt->get_result();
 
-// Make sure the logged-in user owns the recipe
+if ($result->num_rows === 0) {
+    echo "false";
+    exit();
+}
+
+$recipe = $result->fetch_assoc();
+
+//  user
 if ($recipe['userID'] != $userID) {
-    die("Unauthorized action.");
+    echo "false";
+    exit();
 }
 
-
-
-$stmt = $conn->prepare("DELETE FROM Ingredients WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-$stmt = $conn->prepare("DELETE FROM Instructions WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-$stmt = $conn->prepare("DELETE FROM COMMENT WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-$stmt = $conn->prepare("DELETE FROM Likes WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-$stmt = $conn->prepare("DELETE FROM Favourites WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-$stmt = $conn->prepare("DELETE FROM Report WHERE recipeID = ?");
-$stmt->bind_param("i", $recipeID);
-$stmt->execute();
-
-
-// Delete image file
+// photo
 if (!empty($recipe['photoFileName'])) {
     $imagePath = "images/" . $recipe['photoFileName'];
     if (file_exists($imagePath)) {
@@ -67,7 +55,7 @@ if (!empty($recipe['photoFileName'])) {
     }
 }
 
-// Delete video file
+// video
 if (!empty($recipe['videoFilePath'])) {
     $videoPath = "videos/" . $recipe['videoFilePath'];
     if (file_exists($videoPath)) {
@@ -75,11 +63,20 @@ if (!empty($recipe['videoFilePath'])) {
     }
 }
 
-//System
-$stmtDelete = $conn->prepare("DELETE FROM Recipe WHERE id = ?");
-$stmtDelete->bind_param("i", $recipeID);
-$stmtDelete->execute();
+// delete the recipe 
+$deleteStmt = $conn->prepare("DELETE FROM Recipe WHERE id = ?");
 
-// Redirect back to My Recipes page
-header("Location: myRecipes.php");
+if (!$deleteStmt) {
+    echo "false";
+    exit();
+}
+
+$deleteStmt->bind_param("i", $recipeID);
+
+if ($deleteStmt->execute()) {
+    echo "true";
+} else {
+    echo "false";
+}
+
 exit();
