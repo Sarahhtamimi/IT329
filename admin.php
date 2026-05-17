@@ -1087,6 +1087,46 @@ while ($row = mysqli_fetch_assoc($blockedResult)) {
       <span>© 2026 Palm Glow</span>
     </div>
   </footer>
+
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+
+$(document).ready(function () {
+
+    $(".admin_actionForm").submit(function (e) {
+
+        e.preventDefault();
+
+        let form = $(this);
+
+        $.ajax({
+
+            url: "process_report.php",
+            type: "POST",
+            data: form.serialize(),
+
+            success: function (response) {
+
+                if (response.trim() == "true") {
+
+                    form.closest("tr").remove();
+
+                } else {
+
+                    alert("Something went wrong");
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
 </body>
 
 </html>
